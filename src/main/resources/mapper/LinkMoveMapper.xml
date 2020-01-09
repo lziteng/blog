@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzt.ssm.blog.mapper.LinkMoveMapper">
+    <select id="preEntityByOrder" parameterType="int" resultType="com.lzt.ssm.blog.entity.Link">
+        select * from link  where  link_order &lt; #{link_order} order by link_order desc limit 1
+    </select>
+
+    <select id="nextEntityByOrder" parameterType="int" resultType="com.lzt.ssm.blog.entity.Link">
+       select * from link where link_order &gt; #{link_order} order by link_order asc limit 1
+    </select>
+
+    <select id="getMaxOrder" resultType="java.lang.Integer">
+      select max(link_order) from link
+    </select>
+</mapper>

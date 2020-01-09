@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * Created by Mybatis Generator on 2020/01/08
+ * Created by Mybatis Generator on 2020/01/09
  *
  * @author lzt
  */

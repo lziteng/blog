@@ -125,4 +125,9 @@
         </jsp-property-group>
     </jsp-config>
 
+    <!--配置session有效期，单位为分钟-->
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+
 </web-app>

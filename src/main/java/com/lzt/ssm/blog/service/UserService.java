@@ -15,7 +15,7 @@ public interface UserService {
      *
      * @return 用户列表
      */
-    List<User> listUser();
+    List<User> listEntity();
 
     /**
      * 根据id查询用户信息
@@ -23,21 +23,21 @@ public interface UserService {
      * @param id 用户ID
      * @return 用户
      */
-    User getUserById(Integer id);
+    User getEntityById(Integer id);
 
     /**
      * 修改用户信息
      *
      * @param user 用户
      */
-    void updateUser(User user);
+    void updateEntity(User user);
 
     /**
      * 删除用户
      *
      * @param id 用户ID
      */
-    void deleteUser(Integer id);
+    void deleteEntityById(Integer id);
 
     /**
      * 添加用户
@@ -45,7 +45,7 @@ public interface UserService {
      * @param user 用户
      * @return 用户
      */
-    User insertUser(User user);
+    User insertEntity(User user);
 
     /**
      * 根据用户名和邮箱查询用户
@@ -53,7 +53,7 @@ public interface UserService {
      * @param str 用户名或Email
      * @return 用户
      */
-    User getUserByNameOrEmail(String str);
+    User getEntityByNameOrEmail(String str);
 
     /**
      * 根据用户名查询用户
@@ -61,7 +61,7 @@ public interface UserService {
      * @param name 用户名
      * @return 用户
      */
-    User getUserByName(String name);
+    User getEntityByName(String name);
 
     /**
      * 根据邮箱查询用户
@@ -69,5 +69,5 @@ public interface UserService {
      * @param email Email
      * @return 用户
      */
-    User getUserByEmail(String email);
+    User getEntityByEmail(String email);
 }

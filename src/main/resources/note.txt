@@ -1,0 +1,26 @@
+1、由于提交文件内容过大，导致git无法提交的处理方案
+   在代码对应文件夹里，打开Git Bash，用命令将http post的缓存改为50M(默认为1M)
+   git config http.postBuffer 52428800
+
+2、解决重启tomcat后，session中的用户等信息失效
+   4.1、保存到session中的所有实体都 implements Serializable，并且生成serialVersionUID字段
+   4.2、在tomcat的server.xml文件Host节点内，进行以下配置:其中 path="/" 表示项目访问路径
+   <Context path="/" docBase="E:\project\blog">
+        <Manager className="org.apache.catalina.session.PersistentManager"
+        debug="0"
+        saveOnRestart="true"
+        maxActiveSession="-1"
+        minIdleSwap="-1"
+        maxIdleSwap="-1"
+        maxIdleBackup="-1">
+        <Store className="org.apache.catalina.session.FileStore" directory="E:\temp"/>
+        </Manager>
+    </Context>
+    4.3、可在web.xml中配置session有效时间
+     <!--配置session有效期，单位为分钟-->
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+
+
+    5.0

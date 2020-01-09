@@ -1,30 +1,34 @@
-function DoCheck() {
+function DoCheck()
+{
     var ch = document.getElementsByName("ids");
-    if (document.getElementById("allSelect").checked == true) {
-        for (var i = 0; i < ch.length; i++) {
+    if (document.getElementById("allSelect").checked == true)
+    {
+        for (var i = 0; i < ch.length; i++)
+        {
             ch[i].checked = true;
         }
-    } else {
-        for (var i = 0; i < ch.length; i++) {
+    }
+    else
+    {
+        for (var i = 0; i < ch.length; i++)
+        {
             ch[i].checked = false;
         }
     }
 }
 
-function confirmDelete() {
+function confirmDelete()
+{
     var msg = "您确定要删除吗？";
-    if (confirm(msg)==true){
-        return true;
-    }else{
-        return false;
-    }
+    return confirm(msg);
 }
 
 //获取相对路径
-function  getPath(){
+function getPath()
+{
     var pathName = document.location.pathname;
     var index = pathName.substr(1).indexOf("/");
-    var result = pathName.substr(0,index+1);
+    var result = pathName.substr(0, index + 1);
     return result;
 }
 
@@ -38,15 +42,17 @@ $(".dashboard-comment-wrap").mouseleave(function () {
 })
 
 //删除评论
-function deleteComment(id) {
-    if(confirmDelete()==true){
+function deleteComment(id)
+{
+    if (confirmDelete() == true)
+    {
         $.ajax({
             async: false,
             type: "POST",
-            url:'/admin/comment/delete/'+id,
-            contentType : "application/x-www-form-urlencoded; charset=utf-8",
+            url: '/admin/comment/delete/' + id,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
             dataType: "text",
-            complete:function () {
+            complete: function () {
                 window.location.reload();
             }
         })
@@ -54,32 +60,36 @@ function deleteComment(id) {
 }
 
 //添加草稿
-function insertDraft() {
-    if($("#articleContent").val!=""&&$("#articleTitle").val()!="") {
+function insertDraft()
+{
+    if ($("#articleContent").val != "" && $("#articleTitle").val() != "")
+    {
         $.ajax({
             async: false,
             type: "POST",
-            url:'/admin/article/insert',
-            contentType : "application/x-www-form-urlencoded; charset=utf-8",
+            url: '/admin/article/insert',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
             dataType: "text",
-            complete:function () {
+            complete: function () {
                 window.location.reload();
             }
-    })
+        })
     }
 
 }
 
 //删除文章
-function deleteArticle(id) {
-    if(confirmDelete()==true){
+function deleteArticle(id)
+{
+    if (confirmDelete() == true)
+    {
         $.ajax({
             async: false,
             type: "POST",
-            url:'/admin/article/delete/'+id,
-            contentType : "application/x-www-form-urlencoded; charset=utf-8",
+            url: '/admin/article/delete/' + id,
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
             dataType: "text",
-            complete:function () {
+            complete: function () {
                 window.location.reload();
             }
         })
@@ -87,26 +97,29 @@ function deleteArticle(id) {
 }
 
 //查询文章
-function queryArticle() {
+function queryArticle()
+{
     //提交form
     $("#articleForm").attr("action", "/admin/article/search");
     $("#articleForm").submit();
 }
 
 //批量删除文章
-function confirmDeleteArticleBatch() {
-    if(confirmDelete()==true){
-        var text = $("input:checkbox[name='ids']:checked").map(function(index,elem) {
+function confirmDeleteArticleBatch()
+{
+    if (confirmDelete() == true)
+    {
+        var text = $("input:checkbox[name='ids']:checked").map(function (index, elem) {
             return $(elem).val();
         }).get().join(',');
         $.ajax({
             async: false,
             type: "POST",
-            url:'/admin/article/deleteBatch',
-            data:{ids:text},
-            contentType : "application/x-www-form-urlencoded; charset=utf-8",
+            url: '/admin/article/deleteBatch',
+            data: {ids: text},
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
             dataType: "text",
-            complete:function () {
+            complete: function () {
                 window.location.reload();
             }
         })
@@ -114,23 +127,24 @@ function confirmDeleteArticleBatch() {
 }
 
 //退出登录
-function logout() {
+function logout()
+{
     $.ajax({
         async: false,
         type: "POST",
-        url:'/admin/logout',
-        contentType : "application/x-www-form-urlencoded; charset=utf-8",
+        url: '/admin/logout',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
         dataType: "text",
-        complete:function () {
+        complete: function () {
             window.location.reload();
         }
     })
 }
 
 
-
 //添加用户检查用户名是否存在
-function checkUserName() {
+function checkUserName()
+{
     var result;
     $.ajax({
         async: false,//同步，待请求完毕后再执行后面的代码
@@ -141,25 +155,28 @@ function checkUserName() {
         dataType: "json",
         success: function (data) {
             //用户名存在
-            if(data.code==1) {
+            if (data.code == 1)
+            {
                 $("#userNameTips").html(data.msg);
-                result=1;
+                result = 1;
             }
             //用户名不存在
-            if(data.code==0) {
+            if (data.code == 0)
+            {
                 $("#userNameTips").html(data.msg);
-                result=0;
+                result = 0;
             }
         },
         error: function () {
             // alert("数据获取失败")
         }
-    })
+    });
     return result;
 }
 
 //添加用户检查电子邮箱是否存在
-function checkUserEmail() {
+function checkUserEmail()
+{
     var result;
     $.ajax({
         async: false,//同步，待请求完毕后再执行后面的代码
@@ -170,24 +187,24 @@ function checkUserEmail() {
         dataType: "json",
         success: function (data) {
             //用户名存在
-            if(data.code==1) {
+            if (data.code == 1)
+            {
                 $("#userEmailTips").html(data.msg);
-                result=1;
+                result = 1;
             }
             //用户名不存在
-            if(data.code==0) {
+            if (data.code == 0)
+            {
                 $("#userEmailTips").html(data.msg);
-                result=0;
+                result = 0;
             }
         },
         error: function () {
             //alert("数据获取失败")
         }
-    })
+    });
     return result;
 }
-
-
 
 //添加用户验证和编辑用户验证
 layui.use(['form', 'layedit', 'laydate'], function () {
@@ -195,15 +212,23 @@ layui.use(['form', 'layedit', 'laydate'], function () {
     form.verify({
 
         userName: function (value) {
-            if (value.length > 12 || value.length < 4) {
+            if (value.length > 12 || value.length < 4)
+            {
                 return "用户名必须4到12位";
             }
-            if(checkUserName()==1) {
+            if (checkUserName() == 1)
+            {
                 return "用户名已存在";
             }
-        },
+        }
+        //数组的两个值分别代表：[正则匹配、匹配不符时的提示文字]
+        , password: [
+            /^[\S]{6,12}$/
+            , '密码必须6到12位，且不能出现空格'
+        ],
         userEmail: function () {
-            if(checkUserEmail()==1) {
+            if (checkUserEmail() == 1)
+            {
                 return "电子邮箱已存在";
             }
         }
@@ -214,3 +239,5 @@ layui.use(['form', 'layedit', 'laydate'], function () {
         return true;
     });
 });
+
+

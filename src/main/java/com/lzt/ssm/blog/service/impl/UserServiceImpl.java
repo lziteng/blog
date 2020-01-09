@@ -1,6 +1,7 @@
 package com.lzt.ssm.blog.service.impl;
 
-import com.lzt.ssm.blog.entity.User;
+import cn.hutool.core.collection.CollectionUtil;
+import com.lzt.ssm.blog.entity.*;
 import com.lzt.ssm.blog.mapper.UserMapper;
 import com.lzt.ssm.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,44 +20,67 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
 
     @Override
-    public List<User> listUser() {
-        return userMapper.listUser();
+    public List<User> listEntity() {
+        UserExample userExample = new UserExample();
+        userExample.setOrderByClause("user_status desc");
+        return userMapper.selectByExample(userExample);
     }
 
     @Override
-    public User getUserById(Integer id) {
-        return userMapper.getUserById(id);
+    public User getEntityById(Integer id) {
+        return userMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public void updateUser(User user) {
-        userMapper.update(user);
+    public void updateEntity(User user) {
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
     @Override
-    public void deleteUser(Integer id) {
-        userMapper.deleteById(id);
+    public void deleteEntityById(Integer id) {
+        userMapper.deleteByPrimaryKey(id);
     }
 
     @Override
-    public User insertUser(User user) {
-        user.setUserRegisterTime(new Date());
-        userMapper.insert(user);
+    public User insertEntity(User user) {
+        userMapper.insertSelective(user);
         return user;
     }
 
     @Override
-    public User getUserByNameOrEmail(String str) {
-        return userMapper.getUserByNameOrEmail(str);
+    public User getEntityByNameOrEmail(String str) {
+        UserExample userExample = new UserExample();
+        userExample.or().andUserNameEqualTo(str);
+        userExample.or().andUserEmailEqualTo(str);
+        List<User> userList = userMapper.selectByExample(userExample);
+        if (CollectionUtil.isEmpty(userList)) {
+            return null;
+        } else {
+            return userList.get(0);
+        }
     }
 
     @Override
-    public User getUserByName(String name) {
-        return userMapper.getUserByName(name);
+    public User getEntityByName(String name) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andUserNameEqualTo(name);
+        List<User> userList = userMapper.selectByExample(userExample);
+        if (CollectionUtil.isEmpty(userList)) {
+            return null;
+        } else {
+            return userList.get(0);
+        }
     }
 
     @Override
-    public User getUserByEmail(String email) {
-        return userMapper.getUserByName(email);
+    public User getEntityByEmail(String email) {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andUserEmailEqualTo(email);
+        List<User> userList = userMapper.selectByExample(userExample);
+        if (CollectionUtil.isEmpty(userList)) {
+            return null;
+        } else {
+            return userList.get(0);
+        }
     }
 }

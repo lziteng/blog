@@ -30,7 +30,7 @@ public class BackUserController {
      */
     @RequestMapping("")
     public ModelAndView userList(ModelAndView mv) {
-        List<User> userList = userService.listUser();
+        List<User> userList = userService.listEntity();
         mv.addObject("userList", userList);
         mv.setViewName("Admin/User/index");
         return mv;
@@ -46,7 +46,7 @@ public class BackUserController {
     @RequestMapping("/profile")
     public ModelAndView userProfileView(HttpSession session, ModelAndView mv) {
         User sessionUser = (User) session.getAttribute("user");
-        User user = userService.getUserById(sessionUser.getUserId());
+        User user = userService.getEntityById(sessionUser.getUserId());
         mv.addObject("user", user);
         mv.setViewName("Admin/User/profile");
         return mv;
@@ -61,7 +61,7 @@ public class BackUserController {
      */
     @RequestMapping("/edit/{id}")
     public ModelAndView editUserView(@PathVariable("id") Integer id, ModelAndView mv) {
-        User user = userService.getUserById(id);
+        User user = userService.getEntityById(id);
         mv.addObject("user", user);
         mv.setViewName("Admin/User/edit");
         return mv;
@@ -74,8 +74,14 @@ public class BackUserController {
      * @return
      */
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
-    public String editSubmit(User user) {
-        userService.updateUser(user);
+    public String editSubmit(User user, HttpSession session) {
+        userService.updateEntity(user);
+
+        //编辑的用户为当前用户时，更新session中的用户信息(头像问题)
+        User currentUser = (User) session.getAttribute("user");
+        if (currentUser.getUserId().equals(user.getUserId())) {
+            session.setAttribute("user", user);
+        }
         return "redirect:/admin/user";
     }
 
@@ -86,8 +92,11 @@ public class BackUserController {
      * @return
      */
     @RequestMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id) {
-        userService.deleteUser(id);
+    public String deleteUser(@PathVariable("id") Integer id, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (!id.equals(user.getUserId())) {
+            userService.deleteEntityById(id);
+        }
         return "redirect:/admin/user";
     }
 
@@ -111,12 +120,12 @@ public class BackUserController {
      */
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
     public String insertUserSubmit(User user) {
-        User userByName = userService.getUserByName(user.getUserName());
-        User userByEmail = userService.getUserByEmail(user.getUserEmail());
+        User userByName = userService.getEntityByName(user.getUserName());
+        User userByEmail = userService.getEntityByEmail(user.getUserEmail());
         if (userByName == null && userByEmail == null) {
             user.setUserRegisterTime(new Date());
             user.setUserStatus(1);
-            userService.insertUser(user);
+            userService.insertEntity(user);
         }
         return "redirect:/admin/user";
     }
@@ -132,7 +141,7 @@ public class BackUserController {
     public String checkUserName(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<String, Object>();
         String username = request.getParameter("username");
-        User user = userService.getUserByName(username);
+        User user = userService.getEntityByName(username);
         int id = Integer.valueOf(request.getParameter("id"));
         if (user != null) {
             //用户名已存在,但不是当前用户(编辑用户的时候，不提示)
@@ -163,7 +172,7 @@ public class BackUserController {
     public String checkUserEmail(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<String, Object>();
         String email = request.getParameter("email");
-        User user = userService.getUserByEmail(email);
+        User user = userService.getEntityByEmail(email);
         int id = Integer.valueOf(request.getParameter("id"));
         if (user != null) {
             //email已存在,但不是当前用户(编辑用户的时候，不提示)

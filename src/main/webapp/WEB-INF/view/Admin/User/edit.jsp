@@ -64,6 +64,7 @@
             <label class="layui-form-label">密码 <span style="color: #FF5722; ">*</span></label>
             <div class="layui-input-inline">
                 <input type="password" name="userPass" value="${user.userPass}" id="userPass" required
+                       lay-verify="password"
                        autocomplete="off" class="layui-input" min="3" max="20">
             </div>
             <div class="layui-form-mid layui-word-aux"></div>
@@ -109,8 +110,6 @@
             </div>
         </div>
     </form>
-
-
 </rapid:override>
 <rapid:override name="footer-script">
 
@@ -123,11 +122,14 @@
                 elem: '#test1',
                 url: '/admin/upload/img',
                 before: function (obj) {
+                    layer.load();
+                    //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)
                     obj.preview(function (index, file, result) {
                         $('#demo1').attr('src', result);
                     });
                 },
                 done: function (res) {
+                    layer.closeAll();
                     $("#userAvatar").attr("value", res.data.src);
                     if (res.code > 0)
                     {
@@ -135,6 +137,7 @@
                     }
                 },
                 error: function () {
+                    layer.closeAll();
                     var demoText = $('#demoText');
                     demoText.html('' +
                             '<span style="color: #FF5722;">上传失败</span>' +

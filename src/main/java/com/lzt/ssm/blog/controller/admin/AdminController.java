@@ -52,7 +52,7 @@ public class AdminController {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String rememberme = request.getParameter("rememberme");
-        User user = userService.getUserByNameOrEmail(username);
+        User user = userService.getEntityByNameOrEmail(username);
         if (user == null) {
             map.put("code", 1);
             map.put("msg", "用户名无效");
@@ -78,7 +78,7 @@ public class AdminController {
             }
             user.setUserLastLoginTime(new Date());
             user.setUserLastLoginIp(MyUtils.getIp(request));
-            userService.updateUser(user);
+            userService.updateEntity(user);
         }
         String result = new JSONObject(map).toString();
         return result;
