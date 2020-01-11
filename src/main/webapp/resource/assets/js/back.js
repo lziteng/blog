@@ -1,16 +1,16 @@
 function DoCheck()
 {
-    var ch = document.getElementsByName("ids");
+    let ch = document.getElementsByName("ids");
     if (document.getElementById("allSelect").checked == true)
     {
-        for (var i = 0; i < ch.length; i++)
+        for (let i = 0; i < ch.length; i++)
         {
             ch[i].checked = true;
         }
     }
     else
     {
-        for (var i = 0; i < ch.length; i++)
+        for (let i = 0; i < ch.length; i++)
         {
             ch[i].checked = false;
         }
@@ -19,16 +19,16 @@ function DoCheck()
 
 function confirmDelete()
 {
-    var msg = "您确定要删除吗？";
+    let msg = "您确定要删除吗？";
     return confirm(msg);
 }
 
 //获取相对路径
 function getPath()
 {
-    var pathName = document.location.pathname;
-    var index = pathName.substr(1).indexOf("/");
-    var result = pathName.substr(0, index + 1);
+    let pathName = document.location.pathname;
+    let index = pathName.substr(1).indexOf("/");
+    let result = pathName.substr(0, index + 1);
     return result;
 }
 
@@ -109,7 +109,7 @@ function confirmDeleteArticleBatch()
 {
     if (confirmDelete() == true)
     {
-        var text = $("input:checkbox[name='ids']:checked").map(function (index, elem) {
+        const text = $("input:checkbox[name='ids']:checked").map(function (index, elem) {
             return $(elem).val();
         }).get().join(',');
         $.ajax({
@@ -145,7 +145,7 @@ function logout()
 //添加用户检查用户名是否存在
 function checkUserName()
 {
-    var result;
+    let result;
     $.ajax({
         async: false,//同步，待请求完毕后再执行后面的代码
         type: "POST",
@@ -177,7 +177,7 @@ function checkUserName()
 //添加用户检查电子邮箱是否存在
 function checkUserEmail()
 {
-    var result;
+    let result;
     $.ajax({
         async: false,//同步，待请求完毕后再执行后面的代码
         type: "POST",
@@ -206,11 +206,36 @@ function checkUserEmail()
     return result;
 }
 
+function checkKeyValue() {
+    let result;
+    $.ajax({
+        async: false,//同步，待请求完毕后再执行后面的代码
+        type: "POST",
+        url: '/admin/page/checkKey',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        data: {"key": $("#key").val(), "id": $("#pageId").val()},
+        dataType: "json",
+        success: function (data) {
+            if (data.code == 1) {
+                $("#keyValueTips").html(data.msg);
+                result = 1;
+            }
+            if (data.code == 0) {
+                $("#keyValueTips").html(data.msg);
+                result = 0;
+            }
+        },
+        error: function () {
+            // alert("数据获取失败")
+        }
+    });
+    return result;
+}
+
 //添加用户验证和编辑用户验证
 layui.use(['form', 'layedit', 'laydate'], function () {
-    var form = layui.form, layer = layui.layer;
+    let form = layui.form, layer = layui.layer;
     form.verify({
-
         userName: function (value) {
             if (value.length > 12 || value.length < 4)
             {

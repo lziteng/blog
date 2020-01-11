@@ -14,11 +14,9 @@ import java.util.List;
  */
 @Service
 public class NoticeServiceImpl implements NoticeService {
-    @Autowired
-    private NoticeMapper noticeMapper;
 
     @Autowired
-    private NoticeMoveMapper noticeMoveMapper;
+    private NoticeMapper noticeMapper;
 
     @Override
     public void insertEntity(Notice notice) {
@@ -51,17 +49,17 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
-    public Integer getMaxOrder() {
-        return noticeMoveMapper.getMaxOrder();
+    public int getMaxOrder() {
+        return noticeMapper.getMaxOrder();
     }
 
     @Override
-    public Notice preEntityByOrder(int order) {
-        return noticeMoveMapper.preEntityByOrder(order);
+    public Notice getPreEntityByOrder(Integer condition, Integer order) {
+        return noticeMapper.getPreEntityByOrder(condition, order);
     }
 
     @Override
-    public Notice nextEntityByOrder(int order) {
-        return noticeMoveMapper.nextEntityByOrder(order);
+    public Notice getNextEntityByOrder(Integer condition, Integer order) {
+        return noticeMapper.getNextEntityByOrder(condition, order);
     }
 }

@@ -7,11 +7,14 @@ import java.util.Date;
 
 /**
  * Created by Mybatis Generator on 2020/01/09
- * @author lzt 
+ *
+ * @author lzt
  */
 @Data
 public class Link implements Serializable {
+
     private static final long serialVersionUID = -4042129953338824655L;
+
     private Integer linkId;
 
     private String linkUrl;

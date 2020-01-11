@@ -30,13 +30,13 @@ public class BackTagController {
     }
 
     @RequestMapping(value="/insertSubmit",method = RequestMethod.POST)
-    public String insertTagSubmit(Tag tag){
+    public String insertSubmit(Tag tag){
         tagService.insertEntity(tag);
         return "redirect:/admin/tag";
     }
 
     @RequestMapping("/edit/{id}")
-    public ModelAndView editTagView(@PathVariable("id") Integer id,ModelAndView mv){
+    public ModelAndView editView(@PathVariable("id") Integer id,ModelAndView mv){
         List<Tag> tagList = tagService.listEntity();
         mv.addObject("tagList",tagList);
 
@@ -48,13 +48,13 @@ public class BackTagController {
     }
 
     @RequestMapping(value="/editSubmit",method = RequestMethod.POST)
-    public String editTagSubmit(Tag tag){
+    public String editSubmit(Tag tag){
         tagService.updateEntity(tag);
         return "redirect:/admin/tag";
     }
 
     @RequestMapping("/delete/{id}")
-    public String deleteTag(@PathVariable("id") Integer id){
+    public String delete(@PathVariable("id") Integer id){
         tagService.deleteEntityById(id);
         return "redirect:/admin/tag";
     }

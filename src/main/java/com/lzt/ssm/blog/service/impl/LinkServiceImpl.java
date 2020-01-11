@@ -18,9 +18,6 @@ public class LinkServiceImpl implements LinkService {
     @Autowired
     private LinkMapper linkMapper;
 
-    @Autowired
-    private LinkMoveMapper linkMoveMapper;
-
     public LinkServiceImpl() {
     }
 
@@ -65,17 +62,17 @@ public class LinkServiceImpl implements LinkService {
     }
 
     @Override
-    public Integer getMaxOrder() {
-        return linkMoveMapper.getMaxOrder();
+    public int getMaxOrder() {
+        return linkMapper.getMaxOrder();
     }
 
     @Override
-    public Link preEntityByOrder(int order) {
-        return linkMoveMapper.preEntityByOrder(order);
+    public Link getPreEntityByOrder(Integer condition, Integer order) {
+        return linkMapper.getPreEntityByOrder(condition, order);
     }
 
     @Override
-    public Link nextEntityByOrder(int order) {
-        return linkMoveMapper.nextEntityByOrder(order);
+    public Link getNextEntityByOrder(Integer condition, Integer order) {
+        return linkMapper.getNextEntityByOrder(condition, order);
     }
 }

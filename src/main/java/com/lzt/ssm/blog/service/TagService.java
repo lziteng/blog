@@ -8,16 +8,14 @@ import java.util.List;
  * @Author: lzt
  * @Date: 2020/1/9 20:14
  */
-public interface TagService {
+public interface TagService extends BaseCrudService<Tag> {
 
-    void insertEntity(Tag tag);
 
-    void deleteEntityById(Integer id);
-
-    void updateEntity(Tag tag);
-
-    Tag getEntityById(Integer id);
-
+    /**
+     * 获取所有的记录
+     *
+     * @return 所有记录
+     */
     List<Tag> listEntity();
 
 }

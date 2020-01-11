@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
  * @date 2020/1/8 16:12
  */
 public class MyUtils {
+
     public static String getIp(HttpServletRequest request) {
 
         String ip = request.getHeader("X-ClientIP");

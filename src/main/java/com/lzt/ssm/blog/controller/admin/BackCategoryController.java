@@ -17,7 +17,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/admin/category")
-public class CategoryController {
+public class BackCategoryController {
 
     @Autowired
     private CategoryService categoryService;
@@ -32,7 +32,7 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
-    public String insertCategorySubmit(Category category) {
+    public String insertSubmit(Category category) {
         //默认值
         category.setCategoryOrder(1);
         categoryService.insertEntity(category);
@@ -40,7 +40,7 @@ public class CategoryController {
     }
 
     @RequestMapping("/edit/{id}")
-    public ModelAndView editCategoryView(@PathVariable("id") Integer id, ModelAndView mv) {
+    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) {
         List<Category> categoryList = categoryService.listEntity();
         mv.addObject("categoryList", categoryList);
 
@@ -51,13 +51,13 @@ public class CategoryController {
     }
 
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
-    public String editCategorySubmit(Category category) {
+    public String editSubmit(Category category) {
         categoryService.updateEntity(category);
         return "redirect:/admin/category";
     }
 
     @RequestMapping("/delete/{id}")
-    public String deleteCategory(@PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Integer id) {
         categoryService.deleteEntityById(id);
         return "redirect:/admin/category";
     }

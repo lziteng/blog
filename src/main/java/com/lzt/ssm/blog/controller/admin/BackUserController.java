@@ -29,7 +29,7 @@ public class BackUserController {
      * @return
      */
     @RequestMapping("")
-    public ModelAndView userList(ModelAndView mv) {
+    public ModelAndView index(ModelAndView mv) {
         List<User> userList = userService.listEntity();
         mv.addObject("userList", userList);
         mv.setViewName("Admin/User/index");
@@ -44,7 +44,7 @@ public class BackUserController {
      * @return
      */
     @RequestMapping("/profile")
-    public ModelAndView userProfileView(HttpSession session, ModelAndView mv) {
+    public ModelAndView showView(HttpSession session, ModelAndView mv) {
         User sessionUser = (User) session.getAttribute("user");
         User user = userService.getEntityById(sessionUser.getUserId());
         mv.addObject("user", user);
@@ -60,7 +60,7 @@ public class BackUserController {
      * @return
      */
     @RequestMapping("/edit/{id}")
-    public ModelAndView editUserView(@PathVariable("id") Integer id, ModelAndView mv) {
+    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) {
         User user = userService.getEntityById(id);
         mv.addObject("user", user);
         mv.setViewName("Admin/User/edit");
@@ -92,7 +92,7 @@ public class BackUserController {
      * @return
      */
     @RequestMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id, HttpSession session) {
+    public String delete(@PathVariable("id") Integer id, HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (!id.equals(user.getUserId())) {
             userService.deleteEntityById(id);
@@ -107,7 +107,7 @@ public class BackUserController {
      * @return
      */
     @RequestMapping("/insert")
-    public ModelAndView insertUserView(ModelAndView mv) {
+    public ModelAndView insertView(ModelAndView mv) {
         mv.setViewName("Admin/User/insert");
         return mv;
     }
@@ -119,7 +119,7 @@ public class BackUserController {
      * @return
      */
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
-    public String insertUserSubmit(User user) {
+    public String insertSubmit(User user) {
         User userByName = userService.getEntityByName(user.getUserName());
         User userByEmail = userService.getEntityByEmail(user.getUserEmail());
         if (userByName == null && userByEmail == null) {
@@ -139,7 +139,7 @@ public class BackUserController {
     @RequestMapping(value = "/checkUserName", method = RequestMethod.POST)
     @ResponseBody
     public String checkUserName(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>(2);
         String username = request.getParameter("username");
         User user = userService.getEntityByName(username);
         int id = Integer.valueOf(request.getParameter("id"));
@@ -170,7 +170,7 @@ public class BackUserController {
     @RequestMapping(value = "/checkUserEmail", method = RequestMethod.POST)
     @ResponseBody
     public String checkUserEmail(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<String, Object>(2);
         String email = request.getParameter("email");
         User user = userService.getEntityByEmail(email);
         int id = Integer.valueOf(request.getParameter("id"));

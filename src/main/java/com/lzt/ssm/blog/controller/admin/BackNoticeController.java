@@ -17,11 +17,18 @@ import java.util.*;
 @Controller
 @RequestMapping("/admin/notice")
 public class BackNoticeController {
+
     @Autowired
     private NoticeService noticeService;
 
+    /**
+     * 上移
+     */
     public static final String UP = "up";
 
+    /**
+     * 下移
+     */
     public static final String DOWN = "down";
 
     /**
@@ -46,7 +53,7 @@ public class BackNoticeController {
      * @return
      */
     @RequestMapping("/edit/{id}")
-    public ModelAndView editNoticeView(@PathVariable("id") Integer id, ModelAndView mv) {
+    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) {
         Notice notice = noticeService.getEntityById(id);
         mv.addObject("notice", notice);
         mv.setViewName("Admin/Notice/edit");
@@ -60,7 +67,7 @@ public class BackNoticeController {
      * @return
      */
     @RequestMapping(value = "editSubmit", method = RequestMethod.POST)
-    public String editNoticeSubmit(Notice notice) {
+    public String editSubmit(Notice notice) {
         notice.setNoticeUpdateTime(new Date());
         noticeService.updateEntity(notice);
         return "redirect:/admin/notice";
@@ -73,7 +80,7 @@ public class BackNoticeController {
      * @return
      */
     @RequestMapping("/delete/{id}")
-    public String deleteNotice(@PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Integer id) {
         noticeService.deleteEntityById(id);
         return "redirect:/admin/notice";
     }
@@ -84,7 +91,7 @@ public class BackNoticeController {
      * @return
      */
     @RequestMapping("/insert")
-    public String insertNoticeView() {
+    public String insertView() {
         return "Admin/Notice/insert";
     }
 
@@ -95,11 +102,11 @@ public class BackNoticeController {
      * @return
      */
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
-    public String insertNoticeSubmit(Notice notice) {
+    public String insertSubmit(Notice notice) {
         notice.setNoticeCreateTime(new Date());
         notice.setNoticeUpdateTime(new Date());
         Integer maxOrder = noticeService.getMaxOrder();
-        if(maxOrder == null){
+        if (maxOrder == null) {
             maxOrder = 0;
         }
         notice.setNoticeOrder(++maxOrder);
@@ -109,25 +116,25 @@ public class BackNoticeController {
     }
 
     /**
-     * 移动
+     * 上下移动操作
      *
-     * @param id        主键
-     * @param direction up/down
+     * @param id        id
+     * @param direction 移动方向
      */
-    @RequestMapping("/move/{id}")
+    @RequestMapping("/move/{id}/{direction}")
     @ResponseBody
-    public String move(@PathVariable("id") Integer id, String direction) {
+    public String move(@PathVariable("id") Integer id, @PathVariable("direction") String direction) {
         Notice nowEntity = noticeService.getEntityById(id);
 
         Integer nowOrder = nowEntity.getNoticeOrder();
         if (UP.equals(direction)) {
-            Notice preEntity = noticeService.preEntityByOrder(nowOrder);
+            Notice preEntity = noticeService.getPreEntityByOrder(null, nowOrder);
             nowEntity.setNoticeOrder(preEntity.getNoticeOrder());
             preEntity.setNoticeOrder(nowOrder);
             noticeService.updateEntity(nowEntity);
             noticeService.updateEntity(preEntity);
         } else if (DOWN.equals(direction)) {
-            Notice nextEntity = noticeService.nextEntityByOrder(nowOrder);
+            Notice nextEntity = noticeService.getNextEntityByOrder(null, nowOrder);
             nowEntity.setNoticeOrder(nextEntity.getNoticeOrder());
             nextEntity.setNoticeOrder(nowOrder);
             noticeService.updateEntity(nowEntity);

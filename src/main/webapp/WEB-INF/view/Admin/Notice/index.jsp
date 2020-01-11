@@ -43,11 +43,11 @@
         <thead>
         <tr>
             <th>标题</th>
-            <%--<th>Order</th>--%>
-            <th>排序</th>
+                <%--<th>Order</th>--%>
+            <th style="text-align:center;">排序</th>
             <th>状态</th>
             <th>操作</th>
-            <%--<td>ID</td>--%>
+                <%--<td>ID</td>--%>
         </tr>
         </thead>
         <tbody>
@@ -59,12 +59,14 @@
                     <%--  <td>
                               ${c.noticeOrder}
                       </td>--%>
-                <td>
+                <td align="center">
                     <span id="${c.noticeId}" class="up">
-<%--                        <i class="layui-icon" style="font-size: 24px; color: #1E9FFF;">&#xe62f;</i>--%>
+                        <i class="fa fa-arrow-circle-up fa-lg" aria-hidden="true" style="cursor: pointer;"
+                           title="上移"></i>&nbsp;&nbsp;
                     </span>
                     <span id="${c.noticeId}" class="down">
-<%--                        <i class="layui-icon" style="font-size: 24px; color: #1E9FFF;">&#xe601;</i>--%>
+                             <i class="fa fa-arrow-circle-down fa-lg" aria-hidden="true" style="cursor: pointer;"
+                                title="下移"></i>
                     </span>
                 </td>
                 <td>
@@ -82,7 +84,7 @@
                     <a href="/admin/notice/delete/${c.noticeId}" class="layui-btn layui-btn-danger layui-btn-mini"
                        onclick="return confirmDelete()">删除</a>
                 </td>
-                <%--<td>${c.noticeId}</td>--%>
+                    <%--<td>${c.noticeId}</td>--%>
             </tr>
         </c:forEach>
         </tbody>
@@ -102,23 +104,21 @@
          */
         $(function () {
             $(document).on("click", "span.up", function () {
-                var trParent = $(this).parent().parent();
-                if (trParent.prev().length > 0)
-                {
+                const trParent = $(this).parent().parent();
+                if (trParent.prev().length > 0) {
                     trParent.prev().before(trParent);
-                    var id = $(this).attr("id");
-                    $.get("/admin/notice/move/" + id + " ?direction=up", function () {
+                    const id = $(this).attr("id");
+                    $.get("/admin/notice/move/" + id + "/up", function () {
                     })
                 }
             });
 
             $(document).on("click", "span.down", function () {
-                var trParent = $(this).parent().parent();
-                if (trParent.next().length > 0)
-                {
+                const trParent = $(this).parent().parent();
+                if (trParent.next().length > 0) {
                     trParent.next().after(trParent);
-                    var id = $(this).attr("id");
-                    $.get("/admin/notice/move/" + id + " ?direction=down", function () {
+                    const id = $(this).attr("id");
+                    $.get("/admin/notice/move/" + id + "/down", function () {
                     })
                 }
             });

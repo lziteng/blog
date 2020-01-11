@@ -28,7 +28,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">标题 <span style="color: #FF5722; ">*</span></label>
             <div class="layui-input-block">
-                <input type="text" name="noticeTitle" id="title" lay-verify="title" class="layui-input" required>
+                <input type="text" name="noticeTitle" id="title" lay-verify="title" class="layui-input">
             </div>
         </div>
 
@@ -50,7 +50,7 @@
 <rapid:override name="footer-script">
     <script>
         layui.use(['form', 'layedit', 'laydate'], function () {
-            var form = layui.form
+            let form = layui.form
                     , layer = layui.layer
                     , layedit = layui.layedit
                     , laydate = layui.laydate;
@@ -68,7 +68,7 @@
                     layedit.sync(editIndex);
                 }
                 , myRequired: function (value) {
-                    if (value.length <= 0)
+                    if (value.length <= 0 || value == '<br>')
                     {
                         return "请输入具体的公告内容";
                     }
@@ -84,7 +84,7 @@
             });
 
             //创建一个编辑器
-            var editIndex = layedit.build('content', {
+            let editIndex = layedit.build('content', {
                         height: 350,
                     }
             );

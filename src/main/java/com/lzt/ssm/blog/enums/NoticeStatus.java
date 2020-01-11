@@ -8,6 +8,7 @@ public enum NoticeStatus {
 
     NORMAL(1, "显示"),
     HIDDEN(0, "隐藏");
+
     private Integer value;
 
     private String message;

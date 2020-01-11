@@ -42,9 +42,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User insertEntity(User user) {
+    public void insertEntity(User user) {
         userMapper.insertSelective(user);
-        return user;
     }
 
     @Override

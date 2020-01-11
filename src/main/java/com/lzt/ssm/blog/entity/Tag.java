@@ -6,7 +6,8 @@ import java.io.Serializable;
 
 /**
  * Created by Mybatis Generator on 2020/01/09
- * @author lzt 
+ *
+ * @author lzt
  */
 @Data
 public class Tag implements Serializable {
@@ -21,4 +22,17 @@ public class Tag implements Serializable {
      * 文章数量(非数据库字段)
      */
     private Integer articleCount;
+
+    public Tag(Integer tagId) {
+        this.tagId = tagId;
+    }
+
+    public Tag(Integer tagId, String tagDescription) {
+        this.tagId = tagId;
+        this.tagDescription = tagDescription;
+    }
+
+    public static Tag Default() {
+        return new Tag(9999, "无所属标签");
+    }
 }

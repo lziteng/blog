@@ -8,14 +8,13 @@ import java.util.List;
  * @author lzt
  * @date 2020/1/9 15:16
  */
-public interface NoticeService extends EntityMoveService<Notice> {
-     void insertEntity(Notice notice);
+public interface NoticeService extends BaseCrudService<Notice>, EntityMoveService<Notice> {
 
-     void deleteEntityById(Integer noticeId);
-
-     void updateEntity(Notice notice);
-
-     Notice getEntityById(Integer noticeId);
-
-     List<Notice> listEntity(Integer status);
+    /**
+     * 根据状态获取对应的所有记录
+     *
+     * @param status 状态(0:隐藏 1:显示 null时获取所有)
+     * @return 对应的所有记录
+     */
+    List<Notice> listEntity(Integer status);
 }

@@ -48,7 +48,7 @@
             <th>联系方式</th>
             <th>创建时间</th>
                 <%--<th>Order</th>--%>
-            <th>排序</th>
+            <th style="text-align:center;">排序</th>
             <th>状态</th>
             <th>操作</th>
                 <%--<th>ID</th>--%>
@@ -73,12 +73,14 @@
 
                              ${l.linkOrder}
                      </td>--%>
-                <td>
+                <td align="center">
                     <span id="${l.linkId}" class="up">
-<%--                        <i class="layui-icon" style="font-size: 24px; color: #1E9FFF;">&#xe62f;</i>--%>
+                        <i class="fa fa-arrow-circle-up fa-lg" aria-hidden="true" style="cursor: pointer;"
+                           title="上移"></i>&nbsp;&nbsp;
                     </span>
                     <span id="${l.linkId}" class="down">
-<%--                        <i class="layui-icon" style="font-size: 24px; color: #1E9FFF;">&#xe601;</i>--%>
+                        <i class="fa fa-arrow-circle-down fa-lg" aria-hidden="true" style="cursor: pointer;"
+                           title="下移"></i>
                     </span>
                 </td>
                 <td>
@@ -110,23 +112,21 @@
          */
         $(function () {
             $(document).on("click", "span.up", function () {
-                var trParent = $(this).parent().parent();
-                if (trParent.prev().length > 0)
-                {
+                const trParent = $(this).parent().parent();
+                if (trParent.prev().length > 0) {
                     trParent.prev().before(trParent);
-                    var id = $(this).attr("id");
-                    $.get("/admin/link/move/" + id + " ?direction=up", function () {
+                    const id = $(this).attr("id");
+                    $.get("/admin/link/move/" + id + "/up", function () {
                     })
                 }
             });
 
             $(document).on("click", "span.down", function () {
-                var trParent = $(this).parent().parent();
-                if (trParent.next().length > 0)
-                {
+                const trParent = $(this).parent().parent();
+                if (trParent.next().length > 0) {
                     trParent.next().after(trParent);
-                    var id = $(this).attr("id");
-                    $.get("/admin/link/move/" + id + " ?direction=down", function () {
+                    const id = $(this).attr("id");
+                    $.get("/admin/link/move/" + id + "/down", function () {
                     })
                 }
             });

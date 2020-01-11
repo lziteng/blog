@@ -561,22 +561,3 @@ a, div {
 .at, .at a {
     color: #5DA5D4;;
 }
-
-
-span.up {
-    background-image: url(/img/up.png);
-    height: 20px;
-    background-size: 100% 100%;
-    width: 26px;
-    background-repeat: no-repeat;
-    display: inline-block;
-}
-
-span.down {
-    background-image:url(/img/down.png);
-    height: 20px;
-    background-size: 100% 100%;
-    width: 26px;
-    background-repeat: no-repeat;
-    display: inline-block;
-}

@@ -1,6 +1,7 @@
 package com.lzt.ssm.blog.controller.admin;
 
 import com.lzt.ssm.blog.entity.Link;
+import com.lzt.ssm.blog.enums.LinkStatus;
 import com.lzt.ssm.blog.service.LinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,8 +21,14 @@ public class BackLinkController {
     @Autowired
     private LinkService linkService;
 
+    /**
+     * 上移
+     */
     public static final String UP = "up";
 
+    /**
+     * 下移
+     */
     public static final String DOWN = "down";
 
     /**
@@ -46,7 +53,7 @@ public class BackLinkController {
      * @return
      */
     @RequestMapping("/edit/{id}")
-    public ModelAndView editLinkView(@PathVariable("id") Integer id, ModelAndView mv) {
+    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) {
         Link link = linkService.getEntityById(id);
 
         mv.addObject("linkCustom", link);
@@ -64,7 +71,7 @@ public class BackLinkController {
      * @return
      */
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
-    public String editLinkSubmit(Link link) {
+    public String editSubmit(Link link) {
         link.setLinkUpdateTime(new Date());
         linkService.updateEntity(link);
         return "redirect:/admin/link";
@@ -77,7 +84,7 @@ public class BackLinkController {
      * @return
      */
     @RequestMapping("/insert")
-    public ModelAndView insertLinkView(ModelAndView mv) {
+    public ModelAndView insertView(ModelAndView mv) {
         List<Link> linkList = linkService.listEntity(null);
         mv.addObject("linkList", linkList);
 
@@ -92,9 +99,10 @@ public class BackLinkController {
      * @return
      */
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
-    public String insertLinkSubmit(Link link) {
+    public String insertSubmit(Link link) {
         link.setLinkUpdateTime(new Date());
         link.setLinkCreateTime(new Date());
+        link.setLinkStatus(LinkStatus.NORMAL.getValue());
         Integer linkOrder = linkService.getMaxOrder();
         if (linkOrder == null) {
             linkOrder = 0;
@@ -111,30 +119,30 @@ public class BackLinkController {
      * @return
      */
     @RequestMapping("/delete/{id}")
-    public String deleteLink(@PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Integer id) {
         linkService.deleteEntityById(id);
         return "redirect:/admin/link";
     }
 
     /**
-     * 移动
+     * 上下移动操作
      *
-     * @param id        主键
-     * @param direction up/down
+     * @param id        id
+     * @param direction 移动方向
      */
-    @RequestMapping("/move/{id}")
+    @RequestMapping("/move/{id}/{direction}")
     @ResponseBody
-    public String move(@PathVariable("id") Integer id, String direction) {
+    public String move(@PathVariable("id") Integer id, @PathVariable("direction") String direction) {
         Link nowEntity = linkService.getEntityById(id);
         Integer nowOrder = nowEntity.getLinkOrder();
         if (UP.equals(direction)) {
-            Link preEntity = linkService.preEntityByOrder(nowOrder);
+            Link preEntity = linkService.getPreEntityByOrder(null, nowOrder);
             nowEntity.setLinkOrder(preEntity.getLinkOrder());
             preEntity.setLinkOrder(nowOrder);
             linkService.updateEntity(nowEntity);
             linkService.updateEntity(preEntity);
         } else if (DOWN.equals(direction)) {
-            Link nextEntity = linkService.nextEntityByOrder(nowOrder);
+            Link nextEntity = linkService.getNextEntityByOrder(null, nowOrder);
             nowEntity.setLinkOrder(nextEntity.getLinkOrder());
             nextEntity.setLinkOrder(nowOrder);
             linkService.updateEntity(nowEntity);

@@ -29,6 +29,9 @@
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
                         connectionURL="jdbc:mysql://localhost:3306/blog?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;serverTimezone=UTC&amp;useSSL=false&amp;nullCatalogMeansCurrent=true"
                         userId="root" password="root">
+            <!-- <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                             connectionURL="jdbc:mysql://127.0.0.1:3306/blog?useUnicode=true&amp;characterEncoding=utf8"
+                             userId="root" password="root">-->
         </jdbcConnection>
 
         <!-- 默认为false，把JDBC DECIMAL 和NUMERIC类型解析为Integer，
@@ -97,13 +100,42 @@
                     <generatedKey column="id" sqlStatement="JDBC"/>
                 </table>-->
 
-        <table tableName="article" domainObjectName="Article" enableCountByExample="true"
+        <!-- <table tableName="options" domainObjectName="Options" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+                selectByExampleQueryId="false">
+             <property name="my.isgen.usekeys" value="true"/>
+             <property name="useActualColumnNames" value="false"/>
+             <generatedKey column="id" sqlStatement="JDBC"/>
+         </table>-->
+        <!-- <table tableName="menu" domainObjectName="Menu" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+                selectByExampleQueryId="false">
+             <property name="my.isgen.usekeys" value="true"/>
+             <property name="useActualColumnNames" value="false"/>
+             <generatedKey column="id" sqlStatement="JDBC"/>
+         </table>-->
+
+        <table tableName="page" domainObjectName="Page" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="true"
                selectByExampleQueryId="false">
             <property name="my.isgen.usekeys" value="true"/>
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="JDBC"/>
+            <!--强制在xml中，将mediumtext类型转为String类型，便于页面获取内容-->
+            <columnOverride column="page_content" javaType="java.lang.String" jdbcType="VARCHAR"/>
         </table>
+
+        <!-- <table tableName="article" domainObjectName="Article" enableCountByExample="false"
+                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+                selectByExampleQueryId="false">
+             <property name="my.isgen.usekeys" value="true"/>
+             <property name="useActualColumnNames" value="false"/>
+             <generatedKey column="id" sqlStatement="JDBC"/>
+
+             &lt;!&ndash;以下为添加内容(生成WithBLOBS.java文件的解决方案) &ndash;&gt;
+             <columnOverride column="article_content" javaType="java.lang.String" jdbcType="VARCHAR"/>
+             <columnOverride column="article_summary" javaType="java.lang.String" jdbcType="VARCHAR"/>
+         </table>-->
 
     </context>
 </generatorConfiguration>

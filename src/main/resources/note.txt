@@ -22,5 +22,7 @@
         <session-timeout>60</session-timeout>
     </session-config>
 
-
-    5.0
+3、开发基本流程:
+1、通过逆向工程(每次一张表，且只生成一次)生成对应的entity(不需要Example对象)、mapper、xml，在此基础上进行快速开发
+2、entity根据需求扩展字段(如非数据库字段),并手动implements Serializable，以便生成不同的serialVersionUID
+3、在现有mapper、xnl基础上，扩展功能

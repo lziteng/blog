@@ -8,15 +8,12 @@ import java.util.List;
  * @Author: lzt
  * @Date: 2020/1/9 20:48
  */
-public interface CategoryService {
+public interface CategoryService extends BaseCrudService<Category> {
 
-    void insertEntity(Category category);
-
-    void deleteEntityById(Integer id);
-
-    void updateEntity(Category category);
-
-    Category getEntityById(Integer id);
-
+    /**
+     * 获取所有记录
+     *
+     * @return 记录集合
+     */
     List<Category> listEntity();
 }

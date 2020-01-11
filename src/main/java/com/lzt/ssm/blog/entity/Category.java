@@ -28,4 +28,17 @@ public class Category implements Serializable {
      * 文章数量(非数据库字段)
      */
     private Integer articleCount;
+
+    public Category(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public Category(Integer categoryId, String categoryName) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+    }
+
+    public static Category Default() {
+        return new Category(99999, "未分类");
+    }
 }
