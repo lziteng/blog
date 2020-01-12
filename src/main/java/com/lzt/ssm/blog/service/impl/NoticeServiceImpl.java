@@ -1,5 +1,6 @@
 package com.lzt.ssm.blog.service.impl;
 
+import cn.hutool.core.collection.CollectionUtil;
 import com.lzt.ssm.blog.entity.*;
 import com.lzt.ssm.blog.mapper.*;
 import com.lzt.ssm.blog.service.NoticeService;
@@ -46,6 +47,17 @@ public class NoticeServiceImpl implements NoticeService {
         }
         noticeExample.setOrderByClause(" notice_order asc ");
         return noticeMapper.selectByExample(noticeExample);
+    }
+
+    @Override
+    public Notice getEntityByStatusAndId(Integer status, Integer noticeId) {
+        NoticeExample noticeExample = new NoticeExample();
+        noticeExample.createCriteria().andNoticeStatusEqualTo(status).andNoticeIdEqualTo(noticeId);
+        List<Notice> noticeList = noticeMapper.selectByExample(noticeExample);
+        if (CollectionUtil.isEmpty(noticeList)) {
+            return null;
+        }
+        return noticeList.get(0);
     }
 
     @Override

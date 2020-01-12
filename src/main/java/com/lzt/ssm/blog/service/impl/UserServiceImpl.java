@@ -2,6 +2,8 @@ package com.lzt.ssm.blog.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.lzt.ssm.blog.entity.*;
+import com.lzt.ssm.blog.enums.UserStatus;
+import com.lzt.ssm.blog.enums.UserType;
 import com.lzt.ssm.blog.mapper.UserMapper;
 import com.lzt.ssm.blog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,7 @@ public class UserServiceImpl implements UserService {
         UserExample userExample = new UserExample();
         userExample.or().andUserNameEqualTo(str);
         userExample.or().andUserEmailEqualTo(str);
+        userExample.createCriteria().andUserStatusEqualTo(UserStatus.NORMAL.getValue());
         List<User> userList = userMapper.selectByExample(userExample);
         if (CollectionUtil.isEmpty(userList)) {
             return null;
@@ -81,5 +84,12 @@ public class UserServiceImpl implements UserService {
         } else {
             return userList.get(0);
         }
+    }
+
+    @Override
+    public List<User> listInUser() {
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andUserStatusEqualTo(UserStatus.NORMAL.getValue()).andUserTypeEqualTo(UserType.IN.getValue());
+        return userMapper.selectByExample(userExample);
     }
 }

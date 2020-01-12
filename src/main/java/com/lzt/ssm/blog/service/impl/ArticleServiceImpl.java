@@ -30,7 +30,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public int countEntity(Integer status) {
-        return articleMapper.countEntity(1);
+        return articleMapper.countEntity(status);
     }
 
     @Override
@@ -43,13 +43,6 @@ public class ArticleServiceImpl implements ArticleService {
         article.setArticleViewCount(0);
         article.setArticleLikeCount(0);
         article.setArticleCommentCount(0);
-        Integer maxOrder = articleMapper.getMaxOrder();
-        if (maxOrder == null) {
-            maxOrder = 0;
-        }
-        article.setArticleOrder(++maxOrder);
-        int i = 1/0;
-
         articleMapper.insertSelective(article);
         //添加分类和文章的关联记录
         for (Category category : article.getCategoryList()) {
@@ -81,6 +74,11 @@ public class ArticleServiceImpl implements ArticleService {
     public void updateEntity(Article article) {
         article.setArticleUpdateTime(new Date());
         articleMapper.updateByPrimaryKeySelective(article);
+    }
+
+    @Override
+    public Article getEntityById(Integer id) {
+        return articleMapper.selectByPrimaryKey(id);
     }
 
     @Override
@@ -123,9 +121,10 @@ public class ArticleServiceImpl implements ArticleService {
 
             List<Tag> tagList = articleTagRefMapper.listTagByArticleId(article.getArticleId());
             article.setTagList(tagList);
+            return article;
+        } else {
+            return null;
         }
-
-        return article;
     }
 
     @Override
@@ -153,17 +152,52 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public List<Article> listRecentArticle(Integer limit) {
+        return articleMapper.listRecentArticleByLimit(limit);
+    }
+
+    @Override
+    public Article getLastUpdateArticle() {
+        return articleMapper.getLastUpdateArticle();
+    }
+
+    @Override
+    public List<Integer> listCategoryIdsByArticleId(Integer articleId) {
+        return articleCategoryRefMapper.selectCategoryIdByArticleId(articleId);
+    }
+
+    @Override
+    public List<Article> listArticleByCategoryIds(List<Integer> categoryIds, Integer limit) {
+        return articleMapper.findArticleByCategoryIds(categoryIds, limit);
+    }
+
+    @Override
+    public List<Article> listArticleByViewCount(Integer limit) {
+        return articleMapper.listArticleByViewCount(limit);
+    }
+
+    @Override
+    public List<Article> listRandomArticle(Integer limit) {
+        return articleMapper.listRandomArticle(limit);
+    }
+
+    @Override
+    public List<Article> listAllNotWithContent() {
+        return articleMapper.listAllNotWithContent();
+    }
+
+    @Override
     public int getMaxOrder() {
         return articleMapper.getMaxOrder();
     }
 
     @Override
-    public Article getPreEntityByOrder(Integer condition,Integer order) {
-        return articleMapper.getPreEntityByOrder(condition,order);
+    public Article getPreEntityByOrder(Integer condition, Integer order) {
+        return articleMapper.getPreEntityByOrder(condition, order);
     }
 
     @Override
-    public Article getNextEntityByOrder(Integer condition,Integer order) {
-        return articleMapper.getNextEntityByOrder(condition,order);
+    public Article getNextEntityByOrder(Integer condition, Integer order) {
+        return articleMapper.getNextEntityByOrder(condition, order);
     }
 }

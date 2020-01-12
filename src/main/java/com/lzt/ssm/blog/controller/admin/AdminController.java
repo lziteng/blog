@@ -1,6 +1,8 @@
 package com.lzt.ssm.blog.controller.admin;
 
+import com.lzt.ssm.blog.entity.Article;
 import com.lzt.ssm.blog.entity.User;
+import com.lzt.ssm.blog.service.ArticleService;
 import com.lzt.ssm.blog.service.UserService;
 import com.lzt.ssm.blog.util.MyUtils;
 import org.json.JSONObject;
@@ -22,6 +24,9 @@ public class AdminController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private ArticleService articleService;
+
     /**
      * 后台首页
      *
@@ -30,6 +35,10 @@ public class AdminController {
      */
     @RequestMapping("/admin")
     public String index(Model model) {
+        //最新发布
+        List<Article> articleList = articleService.listRecentArticle(5);
+        model.addAttribute("articleList", articleList);
+
         return "Admin/index";
     }
 
@@ -62,6 +71,8 @@ public class AdminController {
         } else {
             map.put("code", 0);
             map.put("msg", "");
+            //控制跳转路径
+            map.put("userType", user.getUserType());
             //添加session
             request.getSession().setAttribute("user", user);
             //添加cookie
@@ -90,7 +101,7 @@ public class AdminController {
      * @param session
      * @return
      */
-    @RequestMapping("/admin/logout")
+    @RequestMapping("/logout")
     public String logout(HttpSession session) {
         session.removeAttribute("user");
         session.invalidate();

@@ -2,10 +2,12 @@ package com.lzt.ssm.blog.service.impl;
 
 import com.lzt.ssm.blog.entity.Category;
 import com.lzt.ssm.blog.entity.CategoryExample;
+import com.lzt.ssm.blog.mapper.ArticleCategoryRefMapper;
 import com.lzt.ssm.blog.mapper.CategoryMapper;
 import com.lzt.ssm.blog.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,13 +21,21 @@ public class CategoryServiceImpl implements CategoryService {
     @Autowired
     private CategoryMapper categoryMapper;
 
+    @Autowired
+    private ArticleCategoryRefMapper articleCategoryRefMapper;
+
     @Override
     public void insertEntity(Category category) {
         categoryMapper.insertSelective(category);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteEntityById(Integer id) {
+        Integer count = articleCategoryRefMapper.countArticleByCategoryId(id);
+        if (count > 0) {
+            throw new RuntimeException("该分类下存在文章，不可删除");
+        }
         categoryMapper.deleteByPrimaryKey(id);
     }
 
@@ -41,7 +51,12 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> listEntity() {
-        CategoryExample categoryExample = new CategoryExample();
-        return categoryMapper.selectByExample(categoryExample);
+        List<Category> categoryList = categoryMapper.selectByExample(null);
+        for (Category category : categoryList) {
+            Integer count = articleCategoryRefMapper.countArticleByCategoryId(category.getCategoryId());
+            category.setArticleCount(count);
+        }
+
+        return categoryList;
     }
 }

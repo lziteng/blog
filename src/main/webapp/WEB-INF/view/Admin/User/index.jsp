@@ -39,6 +39,7 @@
             <col width="50">
             <col width="100">
             <col width="50">
+            <col width="50">
         </colgroup>
         <thead>
         <tr>
@@ -47,6 +48,7 @@
             <th>电子邮件</th>
             <th>文章</th>
             <th>状态</th>
+            <th>用户类别</th>
             <th>操作</th>
             <th>ID</th>
         </tr>
@@ -74,6 +76,16 @@
                         </c:when>
                         <c:otherwise>
                             正常
+                        </c:otherwise>
+                    </c:choose>
+                </td>
+                <td>
+                    <c:choose>
+                        <c:when test="${u.userType==0}">
+                            <span style="color:#FF5722;">外网用户</span>
+                        </c:when>
+                        <c:otherwise>
+                            内网用户
                         </c:otherwise>
                     </c:choose>
                 </td>

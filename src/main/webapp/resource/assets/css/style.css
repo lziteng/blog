@@ -4186,8 +4186,14 @@ li.comments-anchor {
 /** 分页 **/
 
 .pagination {
-    float: right;
-    margin-top: 10px;
+    /*float: right;*/
+    /*margin-top: 20px;*/
+    margin: 20px 10px;
+}
+
+.pagination .tz {
+    line-height: 34px;
+    text-align: right;
 }
 
 .pagination a,
@@ -5242,7 +5248,7 @@ li.comments-anchor {
     padding-left: 15px;
 }
 
-.social-main a:hover {
+.social-main a:hover{
     background: #f1f1f1;
     color: #444;
     transition: all 0.2s ease-in 0s;

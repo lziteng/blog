@@ -13,6 +13,7 @@
     <result column="user_register_time" jdbcType="TIMESTAMP" property="userRegisterTime" />
     <result column="user_last_login_time" jdbcType="TIMESTAMP" property="userLastLoginTime" />
     <result column="user_status" jdbcType="INTEGER" property="userStatus" />
+    <result column="user_type" jdbcType="INTEGER" property="userType" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -45,7 +46,7 @@
   </sql>
   <sql id="Base_Column_List">
     user_id, user_name, user_pass, user_nickname, user_email, user_url, user_avatar, 
-    user_last_login_ip, user_register_time, user_last_login_time, user_status
+    user_last_login_ip, user_register_time, user_last_login_time, user_status, user_type
   </sql>
   <select id="selectByExample" parameterType="com.lzt.ssm.blog.entity.UserExample" resultMap="BaseResultMap">
     select
@@ -76,11 +77,13 @@
     insert into user (user_id, user_name, user_pass, 
       user_nickname, user_email, user_url, 
       user_avatar, user_last_login_ip, user_register_time, 
-      user_last_login_time, user_status)
+      user_last_login_time, user_status, user_type
+      )
     values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{userPass,jdbcType=VARCHAR}, 
       #{userNickname,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR}, #{userUrl,jdbcType=VARCHAR}, 
       #{userAvatar,jdbcType=VARCHAR}, #{userLastLoginIp,jdbcType=VARCHAR}, #{userRegisterTime,jdbcType=TIMESTAMP}, 
-      #{userLastLoginTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=INTEGER})
+      #{userLastLoginTime,jdbcType=TIMESTAMP}, #{userStatus,jdbcType=INTEGER}, #{userType,jdbcType=INTEGER}
+      )
   </insert>
   <insert id="insertSelective" parameterType="com.lzt.ssm.blog.entity.User">
     insert into user
@@ -118,6 +121,9 @@
       <if test="userStatus != null">
         user_status,
       </if>
+      <if test="userType != null">
+        user_type,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="userId != null">
@@ -152,6 +158,9 @@
       </if>
       <if test="userStatus != null">
         #{userStatus,jdbcType=INTEGER},
+      </if>
+      <if test="userType != null">
+        #{userType,jdbcType=INTEGER},
       </if>
     </trim>
   </insert>
@@ -194,6 +203,9 @@
       <if test="userStatus != null">
         user_status = #{userStatus,jdbcType=INTEGER},
       </if>
+      <if test="userType != null">
+        user_type = #{userType,jdbcType=INTEGER},
+      </if>
     </set>
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
@@ -208,7 +220,8 @@
       user_last_login_ip = #{userLastLoginIp,jdbcType=VARCHAR},
       user_register_time = #{userRegisterTime,jdbcType=TIMESTAMP},
       user_last_login_time = #{userLastLoginTime,jdbcType=TIMESTAMP},
-      user_status = #{userStatus,jdbcType=INTEGER}
+      user_status = #{userStatus,jdbcType=INTEGER},
+      user_type = #{userType,jdbcType=INTEGER}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
 </mapper>

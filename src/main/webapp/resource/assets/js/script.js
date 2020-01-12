@@ -302,6 +302,7 @@ function increaseViewCount(articleId) {
             success: function (data) {
                 console.log(data);
                 $(".articleViewCount").html(data);
+                //避免刷新页面时，重复添加
                 $.cookie(
                     "viewId",
                     articleId,//需要cookie写入的业务
@@ -319,7 +320,8 @@ function increaseViewCount(articleId) {
 
 
 //点赞+1
-function increaseLikeCount() {
+function increaseLikeCount(event) {
+    const articleId = $(event).attr("data-id");
     if ($.cookie("likeId") != articleId || $.cookie("likeId") == null) {
         $.ajax({
             async: false,
@@ -329,6 +331,7 @@ function increaseLikeCount() {
             contentType: 'application/json',
             success: function (data) {
                 $(".count").html(data);
+                $(".fa-thumbs-up").css("color"," #d03f42");
                 $.cookie(
                     "likeId",
                     articleId,//需要cookie写入的业务

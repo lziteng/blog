@@ -105,8 +105,8 @@
             <label class="layui-form-label">注册时间 </label>
             <div class="layui-input-inline">
                 <input type="text"
-                       value="<fmt:formatDate value="${user.userRegisterTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
-" placeholder="" autocomplete="off"
+                       value='<fmt:formatDate value="${user.userRegisterTime}" pattern="yyyy-MM-dd HH:mm:ss"/>'
+                       placeholder="" autocomplete="off"
                        class="layui-input" disabled>
             </div>
         </div>
@@ -114,8 +114,8 @@
             <label class="layui-form-label">最后登录时间 </label>
             <div class="layui-input-inline">
                 <input type="text"
-                       value='<fmt:formatDate value="${user.userLastLoginTime}" pattern="yyyy-MM-dd HH:mm:ss"/>
-' placeholder="" autocomplete="off"
+                       value='<fmt:formatDate value="${user.userLastLoginTime}" pattern="yyyy-MM-dd HH:mm:ss"/>'
+                       placeholder="" autocomplete="off"
                        class="layui-input" disabled>
             </div>
         </div>
@@ -129,12 +129,27 @@
         <div class="layui-form-item">
             <label class="layui-form-label">状态 </label>
             <div class="layui-input-inline">
-                <input type="text" value='<c:choose>
-                    <c:when test="${user.userStatus==0}">禁用
-                    </c:when>
-                    <c:otherwise>正常
-                    </c:otherwise>
-                </c:choose>' placeholder="" autocomplete="off"
+                <input type="text" value='
+                <c:choose>
+                       <c:when test="${user.userStatus==0}">禁用
+                </c:when>
+                       <c:otherwise>正常
+                </c:otherwise>
+                </c:choose>'
+                       placeholder="" autocomplete="off"
+                       class="layui-input" disabled>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户类别 </label>
+            <div class="layui-input-inline">
+                <input type="text" value='
+                <c:choose>
+                       <c:when test="${user.userStatus==0}">外网
+                </c:when>
+                 <c:otherwise>内网</c:otherwise>
+                </c:choose>'
+                       placeholder="" autocomplete="off"
                        class="layui-input" disabled>
             </div>
         </div>
@@ -142,7 +157,6 @@
 
 </rapid:override>
 <rapid:override name="footer-script">
-
     <script>
 
     </script>

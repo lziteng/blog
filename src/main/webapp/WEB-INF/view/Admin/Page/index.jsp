@@ -82,7 +82,7 @@
         </table>
     </form>
     <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
-        <legend>自定义页面</legend>
+        <legend>定制页面</legend>
     </fieldset>
     <div class="layui-form">
         <table class="layui-table" style="width: 40%;">
@@ -117,18 +117,8 @@
     <blockquote class="layui-elem-quote layui-quote-nm">
         温馨提示：
         <ul>
-            <li> 1、自定义的页面，无法删除，别名已写入控制器(自己定义对应的方法和页面)</li>
-            <li> 2、用法:对于手动添加的页面，通过/+key访问时(如/aboutSite)，由于在pageDetail方法中，根据pageKey为aboutSite能获取到Page对象，所以会跳转到Home/Page/page.jsp中，展示Page的内容</li>
-            <li> 3、可与菜单功能搭配使用，实现访问不同的菜单(Menu对象的menuUrl需要和Page对象的pageKey保持一致)时，在同一个页面展示不同的内容(Page中维护的内容)。
-                <br>
-                例如:
-                <br>
-                先添加一个顶部菜单(menuName:博客通知、menuUrl:/blogNotice),
-                <br>
-                然后添加一个页面(pageTitle:博客通知、pageKey:blogNotice、pageContent:最新通知xxx)
-                <br>
-                访问顶部菜单/blogNotice，在pageDetail方法中，由于根据pageKey为blogNotice能获取到Page对象，所以会直接跳转到Home/Page/page.jsp中，展示Page的内容。
-            </li>
+            <li> 1、定制的页面，无法删除，别名已写入控制器(自己编写对应的方法和页面)</li>
+            <li> 2、对于手动添加的页面,当通过/key方式访问时,会被/{key}适配到，然后映射到Home/Page/page.jsp中，最后展示Page的内容(可将/key作为菜单Menu的url进行搭配使用)</li>
         </ul>
     </blockquote>
 </rapid:override>

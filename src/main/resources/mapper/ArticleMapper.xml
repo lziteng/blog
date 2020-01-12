@@ -211,8 +211,9 @@
                 select atr.article_id from article_tag_ref as atr where atr.tag_id = #{tagId}
                 ) and
             </if>
+            1 = 1
         </where>
-        order by a.article_order asc, a.article_id asc
+        order by a.article_order desc, a.article_id desc
     </select>
 
     <select id="getEntityByStatusAndId" resultType="com.lzt.ssm.blog.entity.Article">
@@ -249,5 +250,72 @@
         from article
         where article_order > #{order}
         order by article_order asc limit 1
+    </select>
+
+    <select id="listRecentArticleByLimit" parameterType="java.lang.Integer"
+            resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where article_status = 1
+        order by article_create_time desc
+        limit #{value}
+    </select>
+
+    <select id="getLastUpdateArticle" resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where article_status = 1
+        order by article_update_time desc
+        limit 1
+    </select>
+
+    <select id="findArticleByCategoryIds" resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        distinct
+        a.article_id, a.article_user_id, a.article_title, a.article_content, a.article_view_count,
+        a.article_comment_count, a.article_like_count, a.article_is_comment, a.article_status, a.article_order,
+        a.article_update_time, a.article_create_time, a.article_summary
+        from article as a, article_category_ref as acr
+        <where>
+            a.article_status = 1 and
+            a.article_id = acr.article_id
+            <if test="categoryIds != null">
+                and
+                acr.category_id in
+                <foreach collection="categoryIds" open="(" close=")" separator="," item="id">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        order by a.article_order
+        limit #{limit}
+    </select>
+
+    <select id="listArticleByViewCount" resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where article_status = 1
+        order by article_view_count desc
+        limit #{limit}
+    </select>
+
+    <select id="listRandomArticle" resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where article_status = 1
+        order by RAND()
+        limit #{limit}
+    </select>
+
+    <select id="listAllNotWithContent" resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        a.article_id, a.article_user_id, a.article_title, a.article_create_time
+        from article as a
+        where article_status = 1
+        order by a.article_order desc
     </select>
 </mapper>

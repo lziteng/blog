@@ -104,6 +104,15 @@
             </div>
         </div>
         <div class="layui-form-item">
+            <label class="layui-form-label">用户类型</label>
+            <div class="layui-input-block">
+                <input type="radio" name="userType" value="1" title="内网用户"
+                       <c:if test="${user.userType==1}">checked</c:if>>
+                <input type="radio" name="userType" value="0" title="外网用户"
+                       <c:if test="${user.userType==0}">checked</c:if>>
+            </div>
+        </div>
+        <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit lay-filter="demo1" id="submit-btn">保存</button>
                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
@@ -117,7 +126,7 @@
         //上传图片
         layui.use('upload', function () {
             var $ = layui.jquery,
-                    upload = layui.upload;
+                upload = layui.upload;
             var uploadInst = upload.render({
                 elem: '#test1',
                 url: '/admin/upload/img',
@@ -131,8 +140,7 @@
                 done: function (res) {
                     layer.closeAll();
                     $("#userAvatar").attr("value", res.data.src);
-                    if (res.code > 0)
-                    {
+                    if (res.code > 0) {
                         return layer.msg('上传失败');
                     }
                 },
@@ -140,8 +148,8 @@
                     layer.closeAll();
                     var demoText = $('#demoText');
                     demoText.html('' +
-                            '<span style="color: #FF5722;">上传失败</span>' +
-                            ' <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                        '<span style="color: #FF5722;">上传失败</span>' +
+                        ' <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
                     demoText.find('.demo-reload').on('click', function () {
                         uploadInst.upload();
                     });

@@ -46,19 +46,14 @@
     <mvc:resources mapping="/img/**" location="/resource/assets/img/"></mvc:resources>
     <mvc:resources mapping="/plugin/**" location="/resource/assets/plugin/"></mvc:resources>
 
-   <!-- <mvc:interceptors>
+    <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
-            <bean class="com.liuyanzhao.ssm.blog.interceptor.HomeResourceInterceptor"/>
-        </mvc:interceptor>
-        <mvc:interceptor>
-            <mvc:mapping path="/admin"/>
-            <bean class="com.liuyanzhao.ssm.blog.interceptor.SecurityInterceptor"/>
+            <bean class="com.lzt.ssm.blog.interceptor.InitDataInterceptor"/>
         </mvc:interceptor>
         <mvc:interceptor>
             <mvc:mapping path="/admin/**"/>
-            <bean class="com.liuyanzhao.ssm.blog.interceptor.SecurityInterceptor"/>
+            <bean class="com.lzt.ssm.blog.interceptor.SecurityInterceptor"/>
         </mvc:interceptor>
-
-    </mvc:interceptors>-->
+    </mvc:interceptors>
 </beans>

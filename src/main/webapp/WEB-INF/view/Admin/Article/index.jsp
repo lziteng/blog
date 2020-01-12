@@ -18,8 +18,6 @@
         .layui-input-block {
             margin: 0px 10px;
         }
-
-
     </style>
 </rapid:override>
 
@@ -30,6 +28,8 @@
           <a><cite>文章列表</cite></a>
         </span>
     </blockquote>
+    <%--是否显示上下移动图标--%>
+    <c:set var="showMoveIconTag" value="${!pageUrlPrefix.contains('status')}"/>
 
     <div class="layui-tab layui-tab-card">
         <form id="articleForm" method="post">
@@ -41,6 +41,9 @@
                     <col width="100">
                     <col width="150">
                     <col width="100">
+                    <c:if test="${showMoveIconTag}">
+                        <col width="100">
+                    </c:if>
                     <col width="50">
                 </colgroup>
                 <thead>
@@ -49,6 +52,9 @@
                     <th>所属分类</th>
                     <th>状态</th>
                     <th>发布时间</th>
+                    <c:if test="${showMoveIconTag}">
+                        <th style="text-align:center;">排序</th>
+                    </c:if>
                     <th>操作</th>
                     <th>id</th>
                 </tr>
@@ -60,13 +66,11 @@
                             <a href="/article/${a.articleId}"
                                target="_blank">
                                     ${a.articleTitle}
-
                             </a></td>
                         <td>
                             <c:forEach items="${a.categoryList}" var="c">
                                 <a href="/category/${c.categoryId}"
                                    target="_blank">${c.categoryName}</a>
-                                &nbsp;
                             </c:forEach>
                         </td>
                         <td>
@@ -87,6 +91,18 @@
                             <fmt:formatDate value="${a.articleCreateTime}"
                                             pattern="yyyy-MM-dd HH:mm:ss"/>
                         </td>
+                        <c:if test="${showMoveIconTag}">
+                            <td align="center">
+                            <span id="${a.articleId}" class="up">
+                                <i class="fa fa-arrow-circle-up fa-lg" aria-hidden="true" style="cursor: pointer;"
+                                   title="上移"></i>&nbsp;&nbsp;
+                            </span>
+                                <span id="${a.articleId}" class="down">
+                                <i class="fa fa-arrow-circle-down fa-lg" aria-hidden="true" style="cursor: pointer;"
+                                   title="下移"></i>
+                            </span>
+                            </td>
+                        </c:if>
                         <td>
                             <a href="/admin/article/edit/${a.articleId}"
                                class="layui-btn layui-btn-mini">编辑</a>
@@ -105,6 +121,31 @@
 
 </rapid:override>
 <rapid:override name="footer-script">
-    <script></script>
+    <script>
+        /**
+         * 上下排序功能
+         */
+        $(function () {
+            $(document).on("click", "span.up", function () {
+                const trParent = $(this).parent().parent();
+                if (trParent.prev().length > 0) {
+                    trParent.prev().before(trParent);
+                    const id = $(this).attr("id");
+                    $.get("/admin/article/move/" + id + "/up", function () {
+                    })
+                }
+            });
+
+            $(document).on("click", "span.down", function () {
+                const trParent = $(this).parent().parent();
+                if (trParent.next().length > 0) {
+                    trParent.next().after(trParent);
+                    const id = $(this).attr("id");
+                    $.get("/admin/article/move/" + id + "/down", function () {
+                    })
+                }
+            });
+        });
+    </script>
 </rapid:override>
 <%@ include file="../Public/framework.jsp" %>

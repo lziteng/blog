@@ -1,6 +1,7 @@
 package com.lzt.ssm.blog.controller.admin;
 
 import com.lzt.ssm.blog.entity.User;
+import com.lzt.ssm.blog.enums.UserStatus;
 import com.lzt.ssm.blog.service.UserService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,7 +125,7 @@ public class BackUserController {
         User userByEmail = userService.getEntityByEmail(user.getUserEmail());
         if (userByName == null && userByEmail == null) {
             user.setUserRegisterTime(new Date());
-            user.setUserStatus(1);
+            user.setUserStatus(UserStatus.NORMAL.getValue());
             userService.insertEntity(user);
         }
         return "redirect:/admin/user";

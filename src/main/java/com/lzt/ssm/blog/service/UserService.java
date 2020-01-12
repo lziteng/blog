@@ -40,4 +40,11 @@ public interface UserService extends BaseCrudService<User> {
      * @return 用户
      */
     User getEntityByEmail(String email);
+
+    /**
+     * 获取所有内网用户记录
+     *
+     * @return 所有内网用户记录
+     */
+    List<User> listInUser();
 }

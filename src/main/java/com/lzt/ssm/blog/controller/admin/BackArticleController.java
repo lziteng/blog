@@ -32,14 +32,24 @@ public class BackArticleController {
     private TagService tagService;
 
     /**
+     * 上移
+     */
+    public static final String UP = "up";
+
+    /**
+     * 下移
+     */
+    public static final String DOWN = "down";
+
+    /**
      * 后台文章列表显示
      *
      * @return modelAndView
      */
     @RequestMapping(value = "")
     public ModelAndView index(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
-            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-            @RequestParam(required = false) String status, ModelAndView mv) {
+                              @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                              @RequestParam(required = false) String status, ModelAndView mv) {
         HashMap<String, Object> criteria = new HashMap<>(1);
         if (status == null) {
             mv.addObject("pageUrlPrefix", "/admin/article?pageIndex");
@@ -82,6 +92,11 @@ public class BackArticleController {
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
     public String insertSubmit(HttpSession session, ArticleParm articleParm) {
         Article article = convert(session, articleParm);
+        Integer maxOrder = articleService.getMaxOrder();
+        if (maxOrder == null) {
+            maxOrder = 0;
+        }
+        article.setArticleOrder(++maxOrder);
         articleService.insertEntity(article);
         return "redirect:/admin/article";
     }
@@ -182,5 +197,35 @@ public class BackArticleController {
         }
         article.setTagList(tagList);
         return article;
+    }
+
+    /**
+     * 上下移动操作
+     *
+     * @param id        id
+     * @param direction 移动方向
+     */
+    @RequestMapping("/move/{id}/{direction}")
+    @ResponseBody
+    public String move(@PathVariable("id") Integer id, @PathVariable("direction") String direction) {
+        Article nowEntity = articleService.getEntityById(id);
+        Integer nowOrder = nowEntity.getArticleOrder();
+
+        //由于按排序号、id降序排序，所有将上下移动操作互换
+        if (DOWN.equals(direction)) {
+            Article preEntity = articleService.getPreEntityByOrder(null, nowOrder);
+            nowEntity.setArticleOrder(preEntity.getArticleOrder());
+            preEntity.setArticleOrder(nowOrder);
+            articleService.updateEntity(nowEntity);
+            articleService.updateEntity(preEntity);
+        } else if (UP.equals(direction)) {
+            Article nextEntity = articleService.getNextEntityByOrder(null, nowOrder);
+            nowEntity.setArticleOrder(nextEntity.getArticleOrder());
+            nextEntity.setArticleOrder(nowOrder);
+            articleService.updateEntity(nowEntity);
+            articleService.updateEntity(nextEntity);
+        }
+
+        return "success";
     }
 }

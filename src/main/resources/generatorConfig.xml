@@ -58,16 +58,16 @@
         </javaClientGenerator>
 
         <!--当"enableCountByExample"、"enableUpdateByExample"等全为false时，不会生成Example对象-->
-        <!--  <table tableName="user" domainObjectName="User" enableCountByExample="true"
+          <table tableName="user" domainObjectName="User" enableCountByExample="true"
                  enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="true"
                  selectByExampleQueryId="false">
-              &lt;!&ndash; 使用自增长键 &ndash;&gt;
+              <!-- 使用自增长键 -->
               <property name="my.isgen.usekeys" value="true"/>
-              &lt;!&ndash;useActualColumnNames:如果设置为true,那么MBG会使用从数据库元数据获取的列名作为生成的实体对象的属性。
-              如果为false(默认值)，MGB将会尝试将返回的名称转换为驼峰形式&ndash;&gt;
+              <!--useActualColumnNames:如果设置为true,那么MBG会使用从数据库元数据获取的列名作为生成的实体对象的属性。
+              如果为false(默认值)，MGB将会尝试将返回的名称转换为驼峰形式-->
               <property name="useActualColumnNames" value="false"/>
               <generatedKey column="id" sqlStatement="JDBC"/>
-          </table>-->
+          </table>
 
         <!-- <table tableName="link" domainObjectName="Link" enableCountByExample="true"
                 enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="true"
@@ -114,16 +114,16 @@
              <property name="useActualColumnNames" value="false"/>
              <generatedKey column="id" sqlStatement="JDBC"/>
          </table>-->
-
+<!--
         <table tableName="page" domainObjectName="Page" enableCountByExample="false"
                enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="true"
                selectByExampleQueryId="false">
             <property name="my.isgen.usekeys" value="true"/>
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="JDBC"/>
-            <!--强制在xml中，将mediumtext类型转为String类型，便于页面获取内容-->
+            &lt;!&ndash;强制在xml中，将mediumtext类型转为String类型，便于页面获取内容&ndash;&gt;
             <columnOverride column="page_content" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        </table>
+        </table>-->
 
         <!-- <table tableName="article" domainObjectName="Article" enableCountByExample="false"
                 enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"

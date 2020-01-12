@@ -17,4 +17,13 @@ public interface NoticeService extends BaseCrudService<Notice>, EntityMoveServic
      * @return 对应的所有记录
      */
     List<Notice> listEntity(Integer status);
+
+    /**
+     * 根据状态和id获取记录
+     *
+     * @param status   状态
+     * @param noticeId id
+     * @return 记录
+     */
+    Notice getEntityByStatusAndId(Integer status, Integer noticeId);
 }

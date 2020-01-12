@@ -75,7 +75,9 @@
                     </a>
                 </c:otherwise>
             </c:choose>
-
+            <div class="tz">每页<span>10</span>条
+                共<span>${pageInfo.pages}</span>页/<span>${pageInfo.total}</span>条
+            </div>
         </div>
     </nav>
     <%--分页 end--%>
