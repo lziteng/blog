@@ -85,28 +85,20 @@ public interface ArticleMapper extends EntityMoveMapper<Article> {
      * @return 数量
      */
     Integer countEntity(@Param(value = "status") Integer status);
-    //
-    //    /**
-    //     * 获得留言总数
-    //     *
-    //     * @return 数量
-    //     */
-    //    Integer countArticleComment();
-    //
-    //    /**
-    //     * 获得浏览量总数
-    //     *
-    //     * @return 文章数量
-    //     */
-    //    Integer countArticleView();
 
-    //    /**
-    //     * 获得所有文章(文章归档)
-    //     *
-    //     * @return 文章列表
-    //     */
-    //    List<Article> listArticle();
-    //
+    /**
+     * 获得评论总数
+     *
+     * @return 评论总数
+     */
+    Integer countArticleComment();
+
+    /**
+     * 获得浏览量总数
+     *
+     * @return 文章数量
+     */
+    Integer countArticleView();
 
     /**
      * 根据状态和文章id查询文章信息
@@ -116,21 +108,6 @@ public interface ArticleMapper extends EntityMoveMapper<Article> {
      * @return 文章
      */
     Article getEntityByStatusAndId(@Param(value = "status") Integer status, @Param(value = "id") Integer id);
-
-    //
-    //    /**
-    //     * 分页操作
-    //     *
-    //     * @param status    状态
-    //     * @param pageIndex 从第几页开始
-    //     * @param pageSize  数量
-    //     * @return 文章列表
-    //     */
-    //    @Deprecated
-    //    List<Article> pageArticle(@Param(value = "status") Integer status, @Param(value = "pageIndex") Integer pageIndex,
-    //            @Param(value = "pageSize") Integer pageSize);
-    //
-    //
 
     /**
      * 获得访问最多的文章(猜你喜欢)
@@ -152,23 +129,20 @@ public interface ArticleMapper extends EntityMoveMapper<Article> {
      */
     List<Article> listRandomArticle(@Param(value = "limit") Integer limit);
 
-    //
-    //    /**
-    //     * 热评文章
-    //     *
-    //     * @param limit 查询数量
-    //     * @return 文章列表
-    //     */
-    //    List<Article> listArticleByCommentCount(@Param(value = "limit") Integer limit);
-    //
-    //
-    //    /**
-    //     * 更新文章的评论数
-    //     *
-    //     * @param articleId 文章ID
-    //     */
-    //    void updateCommentCount(@Param(value = "articleId") Integer articleId);
-    //
+    /**
+     * 热评文章
+     *
+     * @param limit 查询数量
+     * @return 文章列表
+     */
+    List<Article> listArticleByCommentCount(@Param(value = "limit") Integer limit);
+
+    /**
+     * 更新文章的评论数(根据comment表进行更新)
+     *
+     * @param articleId 文章ID
+     */
+    void updateCommentCount(@Param(value = "articleId") Integer articleId);
 
     /**
      * 获得最后更新的记录
@@ -177,24 +151,15 @@ public interface ArticleMapper extends EntityMoveMapper<Article> {
      */
     Article getLastUpdateArticle();
 
-    //
-    //    /**
-    //     * 用户的文章数
-    //     *
-    //     * @param id 用户ID
-    //     * @return 数量
-    //     */
-    //    Integer countArticleByUser(@Param(value = "id") Integer id);
-    //
-    //    /**
-    //     * 根据分类ID
-    //     *
-    //     * @param categoryId 分类ID
-    //     * @param limit      查询数量
-    //     * @return 文章列表
-    //     */
-    //    List<Article> findArticleByCategoryId(@Param("categoryId") Integer categoryId, @Param("limit") Integer limit);
-    //
+    /**
+     * 用户的文章数
+     *
+     * @param userId 用户ID
+     * @param status 文章状态(为null时查询所有)
+     * @return 文章数量
+     */
+    Integer countArticleByUserAndStatus(@Param(value = "userId") Integer userId, @Param("status") Integer status);
+
 
     /**
      * 根据分类ID获取对应的所有记录
@@ -213,12 +178,5 @@ public interface ArticleMapper extends EntityMoveMapper<Article> {
      * @return 列表
      */
     List<Article> listRecentArticleByLimit(Integer limit);
-    //
-    //    /**
-    //     * 批量删除文章
-    //     *
-    //     * @param ids 文章Id列表
-    //     * @return 影响行数
-    //     */
-    //    Integer deleteBatch(@Param("ids") List<Integer> ids);
+
 }

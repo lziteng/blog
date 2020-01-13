@@ -130,7 +130,7 @@
                                 <a href="/article/${article.articleId}#comments"
                                    rel="external nofollow">
                                     <i class="fa fa-comment-o"></i>
-                                    <i class="comment-count">${commentList.size()}</i>
+                                    <i class="comment-count">${article.articleCommentCount}</i>
                                 </a>
                             </li>
                             <li class="views">
@@ -216,7 +216,8 @@
                             <ul>
                                 <c:forEach items="${relatedArticleList}" var="a">
                                     <li>
-                                        <a href="/article/${a.articleId}" title="${a.articleTitle}">${a.articleTitle}</a>
+                                        <a href="/article/${a.articleId}"
+                                           title="${a.articleTitle}">${a.articleTitle}</a>
                                     </li>
                                 </c:forEach>
                             </ul>
@@ -299,15 +300,14 @@
                            href="/article/${article.articleId}#respond"
                            style="">取消回复</a>
                     </h3>
-                    <form id="comment_form" method="post">
+                    <form id="comment_form" method="post" class="layui-form">
                         <c:if test="${sessionScope.user!=null}">
                             <div class="user_avatar">
-                                <img alt="言曌"
+                                <img alt="${sessionScope.user.userNickname}"
                                      src="${sessionScope.user.userAvatar}"
                                      class="avatar avatar-64 photo" height="64" width="64">
-                                登录者：${sessionScope.user.userNickname}
-                                <br> <a href="javascript:void(0)" onclick="logout()">登出</a>
-                                <input type="hidden" name="commentRole" value="1">
+                                用户：${sessionScope.user.userNickname}
+                                <br> <a href="javascript:void(0)" onclick="logout()">退出</a>
                                 <input type="hidden" name="commentAuthorName"
                                        value="${sessionScope.user.getUserNickname()}">
                                 <input type="hidden" name="commentAuthorEmail"
@@ -315,27 +315,28 @@
                                 <input type="hidden" name="commentAuthorUrl" value="${sessionScope.user.getUserUrl()}">
                             </div>
                         </c:if>
+
                         <p class="comment-form-comment">
                             <textarea id="comment" name="commentContent" rows="4" tabindex="1" required></textarea>
                         </p>
+
                         <div id="comment-author-info">
                             <input type="hidden" name="commentPid" value="0">
                             <input type="hidden" name="commentPname" value="">
                             <c:if test="${sessionScope.user == null}">
-                                <input type="hidden" name="commentRole" value="0">
                                 <p class="comment-form-author">
                                     <label for="author_name">
                                         昵称<span class="required">*</span>
                                     </label>
                                     <input type="text" name="commentAuthorName" id="author_name" class="" value=""
-                                           tabindex="2" required>
+                                           tabindex="2"  required>
                                 </p>
                                 <p class="comment-form-email">
                                     <label for="author_email">
                                         邮箱<span class="required">*</span>
                                     </label>
                                     <input type="email" name="commentAuthorEmail" id="author_email" class="" value=""
-                                           tabindex="3" required>
+                                           tabindex="3"  required>
                                 </p>
                                 <p class="comment-form-url">
                                     <label for="author_url">网址</label>
@@ -357,36 +358,36 @@
                 <ol class="comment-list">
                     <c:set var="floor" value="0"/>
                     <c:forEach items="${commentList}" var="c">
-                        <c:if test="${c.commentPid == 0}">
-                            <c:set var="floor" value="${floor + 1}"/>
-                            <li class="comments-anchor">
-                                <ul id="anchor-comment-${c.commentId}"></ul>
-                            </li>
-                            <li class="comment">
-                                <div id="div-comment-${c.commentId}" class="comment-body">
-                                    <div class="comment-author vcard">
-                                        <img class="avatar" src="${c.commentAuthorAvatar}" alt="avatar"
-                                             style="display: block;">
-                                        <strong>${c.commentAuthorName} </strong>
-                                        <c:if test="${c.commentRole == 1}">
-                                            <i class="fa fa-black-tie" style="color: #c40000;"></i>
-                                            <span class=""
-                                                  style="margin-top: 2px!important;color: #c40000;font-size: 13px;;"><b>博主</b></span>
-                                        </c:if>
-                                        <span class="comment-meta commentmetadata">
+                        <%--评论者--%>
+                        <c:set var="floor" value="${floor + 1}"/>
+                        <li class="comments-anchor">
+                            <ul id="anchor-comment-${c.commentId}"></ul>
+                        </li>
+                        <li class="comment">
+                            <div id="div-comment-${c.commentId}" class="comment-body">
+                                <div class="comment-author vcard">
+                                    <img class="avatar" src="${c.commentAuthorAvatar}" alt="avatar"
+                                         style="display: block;">
+                                    <strong>${c.commentAuthorName} </strong>
+                                    <c:if test="${c.commentRole == 1}">
+                                        <i class="fa fa-black-tie" style="color: #c40000;"></i>
+                                        <span class=""
+                                              style="margin-top: 2px!important;color: #c40000;font-size: 13px;;"><b>博主</b></span>
+                                    </c:if>
+                                    <span class="comment-meta commentmetadata">
                                             <span class="ua-info" style="display: inline;">
                                                 <br>
                                                 <span class="comment-aux">
                                                     <span class="reply">
-                                                        <a rel="nofollow" class="comment-reply-link" href="#respond"
-                                                           onclick="replyComment()">回复
-                                                        </a>
+                                                        <%--js方法控制--%>
+                                                        <a rel="nofollow" class="comment-reply-link"
+                                                           href="#respond">回复</a>
                                                     </span>
                                                     <fmt:formatDate value="${c.commentCreateTime}"
                                                                     pattern="yyyy年MM月dd日 HH:mm:ss"/>&nbsp;
-                                                    <c:if test="${sessionScope.user != null}">
+                                                    <c:if test="${sessionScope.user != null && sessionScope.user.userType == 1}">
                                                         <a href="javascript:void(0)"
-                                                           onclick="devareComment(${c.commentId})">删除</a>
+                                                           onclick="deleteComment(${c.commentId})">删除</a>
                                                         <a class="comment-edit-link"
                                                            href="/admin/comment/edit/${c.commentId}"
                                                            target="_blank">编辑</a>
@@ -395,47 +396,49 @@
                                                 </span>
                                             </span>
                                         </span>
-                                        <p>
-                                            <c:if test="${c.commentPid!=0}">
-                                                <span class="at">@ ${c.commentPname}</span>
-                                            </c:if>
-                                                ${c.commentContent}
-                                        </p>
-                                    </div>
+                                    <p>
+                                            <%-- <c:if test="${c.commentPid!=0}">
+                                                 <span class="at">@ ${c.commentPname}</span>
+                                             </c:if>--%>
+                                            ${c.commentContent}
+                                    </p>
                                 </div>
-                                <ul class="children">
-                                    <c:set var="floor2" value="0"/>
-                                    <c:forEach items="${commentList}" var="c2">
-                                        <c:if test="${c.commentId == c2.commentPid}">
-                                            <c:set var="floor2" value="${floor2+1}"/>
-                                            <li class="comments-anchor">
-                                                <ul id="anchor-comment-${c2.commentId}"></ul>
-                                            </li>
-                                            <li class="comment">
-                                                <div id="div-comment-${c.commentId}" class="comment-body">
-                                                    <div class="comment-author vcard">
-                                                        <img class="avatar" src="${c2.commentAuthorAvatar}" alt="avatar"
-                                                             style="display: block;">
-                                                        <strong>${c2.commentAuthorName} </strong>
-                                                        <c:if test="${c2.commentRole==1}">
-                                                            <i class="fa fa-black-tie" style="color: #c40000;"></i>
-                                                            <span class=""
-                                                                  style="margin-top: 2px!important;color: #c40000;font-size: 13px;;"><b>博主</b></span>
-                                                        </c:if>
-                                                        <span class="comment-meta">
+                            </div>
+
+                                <%--回复者--%>
+                            <ul class="children">
+                                <c:set var="floor2" value="0"/>
+                                <c:forEach items="${replyCommentList}" var="c2">
+                                    <c:if test="${c.commentId == c2.commentPid}">
+                                        <c:set var="floor2" value="${floor2+1}"/>
+                                        <li class="comments-anchor">
+                                            <ul id="anchor-comment-${c2.commentId}"></ul>
+                                        </li>
+                                        <li class="comment">
+                                            <div id="div-comment-${c.commentId}" class="comment-body">
+                                                <div class="comment-author vcard">
+                                                    <img class="avatar" src="${c2.commentAuthorAvatar}" alt="avatar"
+                                                         style="display: block;">
+                                                    <strong>${c2.commentAuthorName} </strong>
+                                                    <c:if test="${c2.commentRole==1}">
+                                                        <i class="fa fa-black-tie" style="color: #c40000;"></i>
+                                                        <span class=""
+                                                              style="margin-top: 2px!important;color: #c40000;font-size: 13px;;"><b>博主</b></span>
+                                                    </c:if>
+                                                    <span class="comment-meta">
                                                     <span class="ua-info" style="display: inline;">
                                                     <br>
                                                     <span class="comment-aux">
                                                         <span class="reply">
-                                                            <a rel="nofollow" class="comment-reply-link" href="#respond"
-                                                               onclick="replyComment()">回复
+                                                            <a rel="nofollow" class="comment-reply-link"
+                                                               href="#respond">回复
                                                             </a>
                                                         </span>
                                                         <fmt:formatDate value="${c2.commentCreateTime}"
                                                                         pattern="yyyy年MM月dd日 HH:mm:ss"/>&nbsp;
-                                                        <c:if test="${sessionScope.user != null}">
+                                                        <c:if test="${sessionScope.user != null && sessionScope.user.userType == 1}">
                                                             <a href="javascript:void(0)"
-                                                               onclick="devareComment(${c2.commentId})">删除</a>
+                                                               onclick="deleteComment(${c2.commentId})">删除</a>
                                                             <a class="comment-edit-link"
                                                                href="/admin/comment/edit/${c2.commentId}"
                                                                target="_blank">编辑</a>
@@ -444,27 +447,23 @@
                                                     </span>
                                                 </span>
                                                     </span>
-                                                        <p>
-                                                            <c:if test="${c2.commentPid!=0}">
-                                                                <c:if test="${c2.commentPid!=0}">
-                                                                    <span class="at">@ ${c2.commentPname}</span>
-                                                                </c:if>
-                                                                ${c2.commentContent}
-                                                            </c:if>
-                                                        </p>
-                                                    </div>
+                                                    <p>
+                                                        <c:if test="${c2.commentPid!=0}">
+                                                            <span class="at">@ ${c2.commentPname}</span>
+                                                        </c:if>
+                                                            ${c2.commentContent}
+                                                    </p>
                                                 </div>
-                                            </li>
-                                        </c:if>
-                                    </c:forEach>
-                                </ul>
-                            </li>
-                        </c:if>
+                                            </div>
+                                        </li>
+                                    </c:if>
+                                </c:forEach>
+                            </ul>
+                        </li>
                     </c:forEach>
                 </ol>
             </div>
                 <%--评论框 end--%>
-
         </main>
         <!-- .site-main -->
     </div>
@@ -480,9 +479,7 @@
 
 <rapid:override name="footer-script">
     <script src="/js/jquery.cookie.js"></script>
-
     <script type="text/javascript">
-
         $(document).ready(function () {
             if ($('#author_name').val() == '') {
                 let author = localStorage.getItem("author");
@@ -502,8 +499,8 @@
 
         //已点赞时
         let likeId = $.cookie("likeId");
-        if(articleId == likeId){
-            $(".fa-thumbs-up").css("color"," #d03f42");
+        if (articleId == likeId) {
+            $(".fa-thumbs-up").css("color", " #d03f42");
         }
 
         increaseViewCount(articleId);
@@ -512,10 +509,7 @@
             // skin: 'notepad', //如果要默认风格，不用设定该key。
             about: false
         });
-
     </script>
 
 </rapid:override>
-
-
 <%@ include file="../Public/framework.jsp" %>

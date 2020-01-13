@@ -1,9 +1,7 @@
 package com.lzt.ssm.blog.controller.admin;
 
-import com.lzt.ssm.blog.entity.Article;
-import com.lzt.ssm.blog.entity.User;
-import com.lzt.ssm.blog.service.ArticleService;
-import com.lzt.ssm.blog.service.UserService;
+import com.lzt.ssm.blog.entity.*;
+import com.lzt.ssm.blog.service.*;
 import com.lzt.ssm.blog.util.MyUtils;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +25,9 @@ public class AdminController {
     @Autowired
     private ArticleService articleService;
 
+    @Autowired
+    private CommentService commentService;
+
     /**
      * 后台首页
      *
@@ -38,6 +39,9 @@ public class AdminController {
         //最新发布
         List<Article> articleList = articleService.listRecentArticle(5);
         model.addAttribute("articleList", articleList);
+
+        List<Comment> commentList = commentService.listRecentComment(10);
+        model.addAttribute("commentList", commentList);
 
         return "Admin/index";
     }

@@ -187,6 +187,31 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public void updateCommentCount(Integer articleId) {
+        articleMapper.updateCommentCount(articleId);
+    }
+
+    @Override
+    public int countArticleByUserAndStatus(Integer userId, Integer status) {
+        return articleMapper.countArticleByUserAndStatus(userId, status);
+    }
+
+    @Override
+    public int countArticleComment() {
+        return articleMapper.countArticleComment();
+    }
+
+    @Override
+    public int countArticleView() {
+        return articleMapper.countArticleView();
+    }
+
+    @Override
+    public List<Article> listArticleByCommentCount(Integer limit) {
+        return articleMapper.listArticleByCommentCount(limit);
+    }
+
+    @Override
     public int getMaxOrder() {
         return articleMapper.getMaxOrder();
     }

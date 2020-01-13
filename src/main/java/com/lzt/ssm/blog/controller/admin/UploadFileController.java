@@ -24,13 +24,14 @@ public class UploadFileController {
      * 文件保存目录，电脑硬盘中的路径
      *
      */
-    /*public final String rootPath =
+   /* public final String rootPath =
             "D:" + File.separator + "myFile" + File.separator + "project" + File.separator + "blog" + File.separator +
                     "uploads";*/
-    public final String ROOTPATH =
+
+    public final String rootPath =
             "E:" + File.separator + "project" + File.separator + "blog" + File.separator + "uploads";
 
-    public final String ALLOWSUFFIX = ".bmp.jpg.jpeg.png.gif.pdf.doc.zip.rar.gz";
+    public final String allowSuffix = ".bmp.jpg.jpeg.png.gif.pdf.doc.zip.rar.gz";
 
     /**
      * 上传文件
@@ -46,7 +47,7 @@ public class UploadFileController {
         String fileName = fileAllName.substring(0, fileAllName.indexOf("."));
         String suffix = fileAllName.substring(fileAllName.lastIndexOf("."));
 
-        if (ALLOWSUFFIX.indexOf(suffix) == -1) {
+        if (allowSuffix.indexOf(suffix) == -1) {
             return new JsonResult().fail("文件格式错误，请重新上传!");
         }
 
@@ -55,7 +56,7 @@ public class UploadFileController {
         File dateDirs = new File(date.get(Calendar.YEAR) + File.separator + (date.get(Calendar.MONTH) + 1));
 
         //目标文件
-        File descFile = new File(ROOTPATH + File.separator + dateDirs + File.separator + fileAllName);
+        File descFile = new File(rootPath + File.separator + dateDirs + File.separator + fileAllName);
         int i = 1;
 
         //检查是否重名

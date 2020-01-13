@@ -256,10 +256,11 @@
                         <div id="published-posts" class="activity-block"><h3>最近发布</h3> <br>
                             <ul>
                                 <c:forEach items="${articleList}" var="a">
-                                    <li><span><fmt:formatDate value="${a.articleCreateTime}"
-                                                              pattern="MM月dd日 HH:mm"/> </span>
-                                        <a href="/article/${a.articleId}"
-                                           target="_blank">${a.articleTitle}</a>
+                                    <li>
+                                        <span>
+                                            <fmt:formatDate value="${a.articleCreateTime}" pattern="MM月dd日 HH:mm"/>
+                                        </span>
+                                        <a href="/article/${a.articleId}" target="_blank">${a.articleTitle}</a>
                                     </li>
                                 </c:forEach>
                             </ul>
@@ -267,9 +268,8 @@
                         <br>
                         <div id="latest-comments" class="activity-block"><h3>近期评论</h3>
                             <ul id="the-comment-list" data-wp-lists="list:comment">
-                                <c:forEach items="${commentList}" begin="0" end="4" step="1" var="c">
+                                <c:forEach items="${commentList}" var="c">
                                     <li class="comment   thread-even comment-item approved">
-
                                         <img alt="" src="${c.commentAuthorAvatar}"
                                              class="avatar avatar-50 photo" height="50" width="50">
                                         <div class="dashboard-comment-wrap has-row-actions">

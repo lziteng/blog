@@ -2,10 +2,9 @@ package com.lzt.ssm.blog.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
 import com.lzt.ssm.blog.entity.*;
-import com.lzt.ssm.blog.enums.UserStatus;
-import com.lzt.ssm.blog.enums.UserType;
+import com.lzt.ssm.blog.enums.*;
 import com.lzt.ssm.blog.mapper.UserMapper;
-import com.lzt.ssm.blog.service.UserService;
+import com.lzt.ssm.blog.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,11 +20,19 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private ArticleService articleService;
+
     @Override
     public List<User> listEntity() {
         UserExample userExample = new UserExample();
         userExample.setOrderByClause("user_status desc");
-        return userMapper.selectByExample(userExample);
+        List<User> userList = userMapper.selectByExample(userExample);
+        for (User user : userList) {
+            int count = articleService.countArticleByUserAndStatus(user.getUserId(), ArticleStatus.PUBLISH.getValue());
+            user.setArticleCount(count);
+        }
+        return userList;
     }
 
     @Override

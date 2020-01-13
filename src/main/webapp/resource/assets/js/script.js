@@ -247,7 +247,7 @@ function logout() {
     $.ajax({
         async: false,
         type: "POST",
-        url: '/admin/logout',
+        url: '/logout',
         contentType: "application/x-www-form-urlencoded; charset=utf-8",
         dataType: "text",
         complete: function () {
@@ -272,7 +272,7 @@ function deleteComment(id) {
     }
 }
 
-//评论区域
+//评论区域-回复
 $(".comment-reply-link").click(function () {
     let authorName = $(this).parents('.comment-author').find("strong").text();
     $("#cancel-comment-reply-link").show();
@@ -281,13 +281,43 @@ $(".comment-reply-link").click(function () {
     $("input[name=commentPid]").attr("value", commentId);
     $("input[name=commentPname]").attr("value", authorName);
     $("#comment").attr("placeholder", "@ " + authorName)
-})
+});
 
+//取消回复
 $("#cancel-comment-reply-link").click(function () {
     $("#cancel-comment-reply-link").hide();
     $("input[name=commentPid]").attr("value", 0);
     $("input[name=commentPname]").attr("value", "");
     $("#reply-title-word").html("发表评论");
+    $("#comment").attr("placeholder", "");
+});
+
+//ajax提交评论信息
+$("#comment_form").submit(function () {
+    $.ajax({
+        async: false,
+        type: "POST",
+        url: '/comment',
+        contentType: "application/x-www-form-urlencoded; charset=utf-8",
+        data: $("#comment_form").serialize(),
+        success: function (data) {
+            if (data.code == 0) {
+                layer.msg("评论成功！");
+                localStorage.setItem('author', $("#author_name").val());
+                localStorage.setItem('email', $("#author_email").val());
+                localStorage.setItem('url', $("#author_url").val());
+                setTimeout(function () {
+                    window.location.reload();
+                }, 2000);
+            } else {
+                layer.msg(data.msg);
+            }
+
+        },
+        error: function () {
+        }
+    })
+    return false;
 })
 
 //文章浏览量+1
@@ -331,7 +361,7 @@ function increaseLikeCount(event) {
             contentType: 'application/json',
             success: function (data) {
                 $(".count").html(data);
-                $(".fa-thumbs-up").css("color"," #d03f42");
+                $(".fa-thumbs-up").css("color", " #d03f42");
                 $.cookie(
                     "likeId",
                     articleId,//需要cookie写入的业务
@@ -346,34 +376,6 @@ function increaseLikeCount(event) {
         });
     }
 }
-
-
-//ajax提交评论信息
-$("#comment_form").submit(function () {
-    $.ajax({
-        async: false,
-        type: "POST",
-        url: '/comment',
-        contentType: "application/x-www-form-urlencoded; charset=utf-8",
-        data: $("#comment_form").serialize(),
-        success: function (data) {
-            if (data.code == 0) {
-                layer.msg("评论成功！");
-                localStorage.setItem('author', $("#author_name").val());
-                localStorage.setItem('email', $("#author_email").val());
-                localStorage.setItem('url', $("#author_url").val());
-                window.setTimeout(window.location.reload, 2000);
-                return false;
-            } else {
-                layer.msg(data.msg);
-            }
-
-        },
-        error: function () {
-        }
-    })
-    return false;
-})
 
 //百度分享
 window._bd_share_config = {
@@ -403,6 +405,9 @@ $("#applyLinkForm").submit(function () {
         data: $("#applyLinkForm").serialize(),
         success: function () {
             alert("申请成功，请耐心等待审核！");
+            setTimeout(function () {
+                window.location.reload();
+            }, 2000);
         }
     })
 })

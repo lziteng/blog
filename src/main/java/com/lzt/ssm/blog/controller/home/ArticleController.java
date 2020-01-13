@@ -1,19 +1,13 @@
 package com.lzt.ssm.blog.controller.home;
 
 import com.alibaba.fastjson.JSON;
-import com.lzt.ssm.blog.entity.Article;
-import com.lzt.ssm.blog.entity.User;
+import com.lzt.ssm.blog.entity.*;
 import com.lzt.ssm.blog.enums.ArticleStatus;
-import com.lzt.ssm.blog.service.ArticleService;
-import com.lzt.ssm.blog.service.UserService;
+import com.lzt.ssm.blog.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,6 +24,9 @@ public class ArticleController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CommentService commentService;
+
     @RequestMapping("/article/{articleId}")
     public String goDetail(@PathVariable("articleId") Integer articleId, Model model) {
         Article article = articleService.getEntityByStatusAndId(ArticleStatus.PUBLISH.getValue(), articleId);
@@ -44,8 +41,10 @@ public class ArticleController {
         model.addAttribute("article", article);
 
         //由于按排序号降序排序，所以上一篇和下一篇互换
-        Article preArticle = articleService.getNextEntityByOrder(ArticleStatus.PUBLISH.getValue(), article.getArticleOrder());
-        Article nextArticle = articleService.getPreEntityByOrder(ArticleStatus.PUBLISH.getValue(), article.getArticleOrder());
+        Article preArticle =
+                articleService.getNextEntityByOrder(ArticleStatus.PUBLISH.getValue(), article.getArticleOrder());
+        Article nextArticle =
+                articleService.getPreEntityByOrder(ArticleStatus.PUBLISH.getValue(), article.getArticleOrder());
         model.addAttribute("preArticle", preArticle);
         model.addAttribute("nextArticle", nextArticle);
 
@@ -57,6 +56,15 @@ public class ArticleController {
         //猜你喜欢(访问量高的文章列表)
         List<Article> mostViewArticleList = articleService.listArticleByViewCount(5);
         model.addAttribute("mostViewArticleList", mostViewArticleList);
+
+        //评论者数据
+        List<Comment> commentList = commentService.listCommentByArticleIdAndPidTag(articleId, false);
+
+        //回复者数据
+        List<Comment> replyCommentList = commentService.listCommentByArticleIdAndPidTag(articleId, true);
+
+        model.addAttribute("commentList", commentList);
+        model.addAttribute("replyCommentList", replyCommentList);
 
         return "Home/Page/articleDetail";
     }

@@ -67,7 +67,7 @@
                         ${u.userEmail}
                 </td>
                 <td>
-                        <%--${u.articleCount}--%>
+                        ${u.articleCount}
                 </td>
                 <td>
                     <c:choose>

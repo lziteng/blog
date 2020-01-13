@@ -66,14 +66,21 @@ public class InitDataInterceptor implements HandlerInterceptor {
         //6、相关统计数据
         Map<String, Object> siteBasicData = new HashMap<>(10);
 
+
         siteBasicData.put("articleCount", articleService.countEntity(ArticleStatus.PUBLISH.getValue()));
+        siteBasicData.put("commentCount", articleService.countArticleComment());
         siteBasicData.put("categoryCount", categoryList.size());
         siteBasicData.put("tagCount", tagList.size());
         siteBasicData.put("linkCount", linkList.size());
+        siteBasicData.put("viewCount", articleService.countArticleView());
         siteBasicData.put("articleLastUpdateTime", articleService.getLastUpdateArticle().getArticleUpdateTime());
         request.setAttribute("siteBasicData", siteBasicData);
 
-        //随机文章(用于在文章详情页、分类列表页、标签列表页展示)
+        //7、热评文章
+        List<Article> mostCommentArticleList = articleService.listArticleByCommentCount(8);
+        request.setAttribute("mostCommentArticleList", mostCommentArticleList);
+
+        //8、随机文章(用于在文章详情页、分类列表页、标签列表页展示)
         List<Article> randomArticleList = articleService.listRandomArticle(8);
         request.setAttribute("randomArticleList", randomArticleList);
 

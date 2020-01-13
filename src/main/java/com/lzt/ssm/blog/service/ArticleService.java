@@ -4,8 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.lzt.ssm.blog.entity.Article;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author lzt
@@ -107,4 +106,44 @@ public interface ArticleService extends BaseCrudService<Article>, EntityMoveServ
      * @return
      */
     List<Article> listAllNotWithContent();
+
+    /**
+     * 更新文章的评论数(根据comment表进行更新)
+     *
+     * @param articleId 文章ID
+     */
+    void updateCommentCount(Integer articleId);
+
+    /**
+     * 用户的文章数
+     *
+     * @param userId 用户ID
+     * @param status 文章状态(为null时查询所有)
+     * @return 文章数量
+     */
+    int countArticleByUserAndStatus(Integer userId, Integer status);
+
+    /**
+     * 获得评论总数
+     *
+     * @return 评论总数
+     */
+    int countArticleComment();
+
+    /**
+     * 获得浏览量总数
+     *
+     * @return 文章数量
+     */
+    int countArticleView();
+
+    /**
+     * 热评文章
+     *
+     * @param limit 查询数量
+     * @return 文章列表
+     */
+    List<Article> listArticleByCommentCount(Integer limit);
+
+
 }

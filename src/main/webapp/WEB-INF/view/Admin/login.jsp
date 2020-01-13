@@ -156,7 +156,6 @@
                         }
                         else
                         {
-
                             window.location.href = data.userType == 1 ? "/admin" : '/';
                         }
                     },

@@ -240,7 +240,12 @@
         select
         <include refid="Base_Column_List"/>
         from article
-        where article_order &lt; #{order}
+        <where>
+            <if test="condition != null">
+                article_status = #{condition} and
+            </if>
+            article_order &lt; #{order}
+        </where>
         order by article_order desc limit 1
     </select>
 
@@ -248,7 +253,12 @@
         select
         <include refid="Base_Column_List"/>
         from article
-        where article_order > #{order}
+        <where>
+            <if test="condition != null">
+                article_status = #{condition} and
+            </if>
+            article_order > #{order}
+        </where>
         order by article_order asc limit 1
     </select>
 
@@ -317,5 +327,43 @@
         from article as a
         where article_status = 1
         order by a.article_order desc
+    </select>
+
+    <update id="updateCommentCount" parameterType="java.lang.Integer">
+      update article as a
+      set
+      a.article_comment_count = (
+      select count(*) from comment as c where a.article_id = c.comment_article_id
+      )
+      where a.article_id = #{articleId}
+    </update>
+
+    <select id="countArticleByUserAndStatus" resultType="java.lang.Integer">
+        select count(*) from article
+        <where>
+            <if test="status != null">
+                article_status = #{status} and
+            </if>
+            article_user_id = #{userId}
+        </where>
+    </select>
+
+    <select id="countArticleComment" resultType="java.lang.Integer">
+        select sum(article_comment_count) from article
+        where article_status = 1
+    </select>
+
+    <select id="countArticleView" resultType="java.lang.Integer">
+        select sum(article_view_count) from article
+        where article_status = 1
+    </select>
+
+    <select id="listArticleByCommentCount" resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        a.article_id, a.article_title
+        from article as a
+        where article_status = 1
+        order by a.article_comment_count desc
+        limit #{limit}
     </select>
 </mapper>
