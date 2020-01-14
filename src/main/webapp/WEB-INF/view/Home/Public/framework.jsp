@@ -30,6 +30,8 @@
         </title>
     </rapid:block>
     <link rel="stylesheet" href="/css/style.css">
+    <%--引用自己的路径(https://www.iconfont.cn/)--%>
+    <link rel="stylesheet" href="http://at.alicdn.com/t/font_1613094_0urb9gq4zld.css">
     <link rel="stylesheet" href="/plugin/font-awesome/css/font-awesome.min.css">
 
     <rapid:block name="header-style">
@@ -38,6 +40,8 @@
 </head>
 <body>
 <div id="page" class="site" style="transform: none;">
+
+<%--    <%@ include file="part/search.jsp" %>--%>
 
     <%@ include file="part/header.jsp" %>
     <div id="content" class="site-content" style="transform: none;">
@@ -50,6 +54,9 @@
     <rapid:block name="link"></rapid:block>
     <%@ include file="part/footer.jsp" %>
 
+    <%@ include file="part/right-fixed.jsp" %>
+    <div class="eyecare"></div>
+
 </div>
 
 <script src="/js/jquery.min.js"></script>
@@ -57,6 +64,8 @@
 <script src='/js/sticky.js'></script>
 <script src="/js/script.js"></script>
 <script src="/plugin/layui/layui.all.js"></script>
+<script src="/js/gb2big5.js"></script>
+<script src="/js/blog.js"></script>
 
 
 <rapid:block name="footer-script"></rapid:block>

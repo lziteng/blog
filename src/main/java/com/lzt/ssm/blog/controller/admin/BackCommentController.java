@@ -93,7 +93,12 @@ public class BackCommentController {
 
     @RequestMapping(value = "/delete/{commentId}", method = RequestMethod.POST)
     public void delete(@PathVariable("commentId") Integer commentId) {
+        Comment comment = commentService.getEntityById(commentId);
+
         commentService.deleteChildComment(commentId);
         commentService.deleteEntityById(commentId);
+
+        //更新评论数
+        articleService.updateCommentCount(comment.getCommentArticleId());
     }
 }

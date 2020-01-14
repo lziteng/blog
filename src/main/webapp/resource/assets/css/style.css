@@ -2705,7 +2705,11 @@ img.alignleft {
 
 .widget_categories a:hover,
 .widget_links a:hover,
-.tagcloud a:hover,
+.tagcloud a:hover {
+    background: #8c8686!important;
+}
+
+
 #sidebar .widget_nav_menu a:hover {
     background: #009688;
     color: #fff !important;
@@ -2724,6 +2728,7 @@ img.alignleft {
     line-height: 26px;
     text-align: center;
     border: 1px solid #ddd;
+    color: #fff !important;
     border-radius: 2px;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
 }
@@ -5625,7 +5630,7 @@ li.comments-anchor {
     margin: 0;
     padding: 0;
     border: none;
-    box-shadow: 0;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
     border-radius: 0;
 }
 
@@ -7523,3 +7528,11 @@ body {
     /*font-family: Courier New;*/
     /*font-size: 12px;*/
 /*}*/
+
+.eyes {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    outline: 5000px solid rgba(0,0,0,0.4);
+}

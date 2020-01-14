@@ -22,40 +22,43 @@ public class BackTagController {
     private TagService tagService;
 
     @RequestMapping("")
-    private ModelAndView index(ModelAndView mv){
+    private ModelAndView index(ModelAndView mv) {
         List<Tag> tagList = tagService.listEntity();
-        mv.addObject("tagList",tagList);
+        mv.addObject("tagList", tagList);
         mv.setViewName("Admin/Tag/index");
         return mv;
     }
 
-    @RequestMapping(value="/insertSubmit",method = RequestMethod.POST)
-    public String insertSubmit(Tag tag){
+    @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
+    public String insertSubmit(Tag tag) {
         tagService.insertEntity(tag);
         return "redirect:/admin/tag";
     }
 
     @RequestMapping("/edit/{id}")
-    public ModelAndView editView(@PathVariable("id") Integer id,ModelAndView mv){
+    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) {
         List<Tag> tagList = tagService.listEntity();
-        mv.addObject("tagList",tagList);
+        mv.addObject("tagList", tagList);
 
         Tag tag = tagService.getEntityById(id);
-        mv.addObject("tag",tag);
+        mv.addObject("tag", tag);
 
         mv.setViewName("Admin/Tag/edit");
         return mv;
     }
 
-    @RequestMapping(value="/editSubmit",method = RequestMethod.POST)
-    public String editSubmit(Tag tag){
+    @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
+    public String editSubmit(Tag tag) {
         tagService.updateEntity(tag);
         return "redirect:/admin/tag";
     }
 
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer id){
-        tagService.deleteEntityById(id);
+    public String delete(@PathVariable("id") Integer id) {
+        Integer count = tagService.countArticleByTagId(id);
+        if (count == 0) {
+            tagService.deleteEntityById(id);
+        }
         return "redirect:/admin/tag";
     }
 }

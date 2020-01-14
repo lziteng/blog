@@ -62,7 +62,7 @@
                         <i class="fa fa-bars"></i>
                     </a>
                     <div class="menu-pcmenu-container">
-                        <ul id="menu-pcmenu" class="down-menu nav-menu sf-js-enabled sf-arrows">
+                        <ul id="menu-pcmenu" class="down-menu nav-menu">
                             <li>
                                 <a href="/">
                                     <i class="fa-home fa"></i>

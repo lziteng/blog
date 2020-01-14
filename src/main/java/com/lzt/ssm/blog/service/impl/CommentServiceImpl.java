@@ -26,6 +26,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> listComment() {
         CommentExample commentExample = new CommentExample();
+        commentExample.setOrderByClause("comment_create_time desc");
         return commentMapper.selectByExample(commentExample);
     }
 

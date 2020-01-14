@@ -58,7 +58,11 @@ public class BackCategoryController {
 
     @RequestMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer id) {
-        categoryService.deleteEntityById(id);
+        Integer count = categoryService.countArticleByCategoryId(id);
+        if(count == 0){
+            categoryService.deleteEntityById(id);
+        }
+
         return "redirect:/admin/category";
     }
 

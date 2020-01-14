@@ -16,4 +16,12 @@ public interface CategoryService extends BaseCrudService<Category> {
      * @return 记录集合
      */
     List<Category> listEntity();
+
+    /**
+     * 根据分类id获取对应的文章数
+     *
+     * @param categoryId 分类id
+     * @return 对应的文章数
+     */
+    Integer countArticleByCategoryId(Integer categoryId);
 }

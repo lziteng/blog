@@ -20,6 +20,8 @@ import java.util.*;
 @RequestMapping("/admin/user")
 public class BackUserController {
 
+    public static final Integer fixedAdminUserId = 1;
+
     @Autowired
     private UserService userService;
 
@@ -76,6 +78,12 @@ public class BackUserController {
      */
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
     public String editSubmit(User user, HttpSession session) {
+        if (fixedAdminUserId.equals(user.getUserId())) {
+            user.setUserName("admin");
+            user.setUserPass("123456");
+            user.setUserStatus(UserStatus.NORMAL.getValue());
+        }
+
         userService.updateEntity(user);
 
         //编辑的用户为当前用户时，更新session中的用户信息(头像问题)
@@ -95,7 +103,7 @@ public class BackUserController {
     @RequestMapping("/delete/{id}")
     public String delete(@PathVariable("id") Integer id, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (!id.equals(user.getUserId())) {
+        if (!id.equals(user.getUserId()) && !fixedAdminUserId.equals(id)) {
             userService.deleteEntityById(id);
         }
         return "redirect:/admin/user";

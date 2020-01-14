@@ -59,4 +59,9 @@ public class CategoryServiceImpl implements CategoryService {
 
         return categoryList;
     }
+
+    @Override
+    public Integer countArticleByCategoryId(Integer categoryId) {
+        return articleCategoryRefMapper.countArticleByCategoryId(categoryId);
+    }
 }
