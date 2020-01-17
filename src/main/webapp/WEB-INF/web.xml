@@ -61,7 +61,7 @@
 
     <!--springmvc前端控制器 -->
     <servlet>
-        <servlet-name>ForestBlog</servlet-name>
+        <servlet-name>blog</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
@@ -69,7 +69,7 @@
         </init-param>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ForestBlog</servlet-name>
+        <servlet-name>blog</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 

@@ -32,6 +32,35 @@
                        class="layui-input">
             </div>
         </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题图片 </label>
+            <div class="layui-input-block">
+                <div class="layui-input-inline">
+                    <div class="layui-upload">
+                        <div class="layui-upload-list" style="">
+                            <c:choose>
+                                <c:when test="${article.articlePhoto != null}">
+                                    <img class="layui-upload-img" src="${article.articlePhoto}" id="demo1" width="200"
+                                         height="150">
+                                    <p id="demoText">
+                                        <a class="layui-btn layui-btn-mini demo-delete"
+                                           onclick="deletePhoto(this)">删除</a>
+                                    </p>
+                                </c:when>
+                                <c:otherwise>
+                                    <img class="layui-upload-img" src="/img/thumbnail/default.jpg" id="demo1" width="200"
+                                         height="150">
+                                    <p id="demoText"> </p>
+                                </c:otherwise>
+                            </c:choose>
+
+                        </div>
+                        <button type="button" class="layui-btn" id="test1">上传图片</button>
+                    </div>
+                </div>
+                <input type="hidden" name="articlePhoto" id="photo" value="${article.articlePhoto}">
+            </div>
+        </div>
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">内容 <span style="color: #FF5722; ">*</span></label>
@@ -116,6 +145,54 @@
 
 <rapid:override name="footer-script">
     <script>
+
+        //上传图片
+        layui.use('upload', function () {
+            var $ = layui.jquery,
+                    upload = layui.upload;
+            var uploadInst = upload.render({
+                elem: '#test1',
+                url: '/admin/upload/img',
+                data: {
+                    type: 'article'
+                },
+                size: '1024*2',
+                before: function (obj) {
+                    obj.preview(function (index, file, result) {
+                        $('#demo1').attr('src', result);
+                    });
+                },
+                done: function (res) {
+                    $("#photo").attr("value", res.data.src);
+                    if (res.code > 0)
+                    {
+                        return layer.msg('上传失败');
+                    }
+                    var demoText = $('#demoText');
+                    demoText.html(' <a class="layui-btn layui-btn-mini demo-delete">删除</a>');
+                    demoText.find('.demo-delete').on('click', function () {
+                        deletePhoto(this);
+                    });
+                },
+                error: function () {
+                    var demoText = $('#demoText');
+                    demoText.html('' +
+                            '<span style="color: #FF5722;">上传失败</span>' +
+                            ' <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+        });
+
+        function deletePhoto(event)
+        {
+            $('#demo1').attr('src', null);
+            $("#photo").attr("value", null);
+            $(event).remove();
+        }
+
         layui.use(['form', 'layedit', 'laydate'], function () {
             var form = layui.form
                     , layer = layui.layer

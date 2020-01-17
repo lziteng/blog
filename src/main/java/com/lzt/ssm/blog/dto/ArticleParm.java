@@ -16,6 +16,8 @@ public class ArticleParm {
 
     private String articleTitle;
 
+    private String articlePhoto;
+
     private String articleContent;
 
     private Integer articleParentCategoryId;

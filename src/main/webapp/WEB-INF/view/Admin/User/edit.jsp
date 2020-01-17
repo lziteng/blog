@@ -130,6 +130,10 @@
             var uploadInst = upload.render({
                 elem: '#test1',
                 url: '/admin/upload/img',
+                data: {
+                    type: "other"
+                },
+                size: "1024*2",
                 before: function (obj) {
                     layer.load();
                     //预读本地文件，如果是多文件，则会遍历。(不支持ie8/9)

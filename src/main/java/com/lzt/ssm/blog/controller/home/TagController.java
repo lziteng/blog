@@ -3,6 +3,7 @@ package com.lzt.ssm.blog.controller.home;
 import com.github.pagehelper.PageInfo;
 import com.lzt.ssm.blog.entity.Article;
 import com.lzt.ssm.blog.entity.Tag;
+import com.lzt.ssm.blog.enums.ArticleStatus;
 import com.lzt.ssm.blog.service.ArticleService;
 import com.lzt.ssm.blog.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,7 @@ public class TagController {
 
         HashMap<String, Object> criteria = new HashMap<>(2);
         criteria.put("tagId", tagId);
+        criteria.put("status", ArticleStatus.PUBLISH.getValue());
 
         PageInfo<Article> pageInfo = articleService.pageEntity(pageIndex, pageSize, criteria);
 

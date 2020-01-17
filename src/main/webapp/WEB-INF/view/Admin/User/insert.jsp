@@ -117,6 +117,10 @@
             var uploadInst = upload.render({
                 elem: '#test1',
                 url: '/admin/upload/img',
+                data: {
+                    type: "other"
+                },
+                size: "1024*2",
                 before: function (obj) {
                     console.log(obj);
                     obj.preview(function (index, file, result) {

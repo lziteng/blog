@@ -30,10 +30,17 @@
                 <article class="post type-post">
                     <figure class="thumbnail">
                         <a href="/article/${a.articleId}">
-                            <img width="280" height="210"
-                                 src="/img/thumbnail/random/img_${a.articleId%15}.jpg"
-                                 class="attachment-content size-content wp-post-image"
-                                 alt="${a.articleTitle}">
+                            <c:choose>
+                                <c:when test="${a.articlePhoto != null}">
+                                    <img  src="${a.articlePhoto}"  class="attachment-content size-content wp-post-image"
+                                         alt="${a.articleTitle}">
+                                </c:when>
+                                <c:otherwise>
+                                    <img  src="/img/thumbnail/random/img_${a.articleId%15}.jpg"
+                                         class="attachment-content size-content wp-post-image"
+                                         alt="${a.articleTitle}">
+                                </c:otherwise>
+                            </c:choose>
                         </a>
                         <span class="cat">
                                 <a href="/category/${a.categoryList[a.categoryList.size()-1].categoryId}">

@@ -23,6 +23,7 @@ public class SecurityInterceptor implements HandlerInterceptor {
         User user = (User) request.getSession().getAttribute("user");
         if (user == null || user.getUserType().equals(UserType.OUT.getValue())) {
             response.sendRedirect("/403");
+            return false;
         }
         return true;
     }

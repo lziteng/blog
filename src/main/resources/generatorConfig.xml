@@ -26,12 +26,12 @@
         connectionURL="jdbc:mysql://localhost/forest_blog"
         -->
         <!--connectionURL末尾加上&nullCatalogMeansCurrent=true, 解决生成文件缺少 xxxByPrimaryKey 的问题 -->
-        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://localhost:3306/blog?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;serverTimezone=UTC&amp;useSSL=false&amp;nullCatalogMeansCurrent=true"
-                        userId="root" password="root">
       <!--  <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://127.0.0.1:3306/blog?useUnicode=true&amp;characterEncoding=utf8"
+                        connectionURL="jdbc:mysql://localhost:3306/blog?zeroDateTimeBehavior=CONVERT_TO_NULL&amp;serverTimezone=UTC&amp;useSSL=false&amp;nullCatalogMeansCurrent=true"
                         userId="root" password="root">-->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver"
+                        connectionURL="jdbc:mysql://127.0.0.1:3306/blog?useUnicode=true&amp;characterEncoding=utf8"
+                        userId="root" password="root">
         </jdbcConnection>
 
         <!-- 默认为false，把JDBC DECIMAL 和NUMERIC类型解析为Integer，
@@ -127,25 +127,25 @@
                     <columnOverride column="page_content" javaType="java.lang.String" jdbcType="VARCHAR"/>
                 </table>-->
 
-        <!-- <table tableName="article" domainObjectName="Article" enableCountByExample="false"
+         <table tableName="article" domainObjectName="Article" enableCountByExample="false"
                 enableUpdateByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
                 selectByExampleQueryId="false">
              <property name="my.isgen.usekeys" value="true"/>
              <property name="useActualColumnNames" value="false"/>
              <generatedKey column="id" sqlStatement="JDBC"/>
 
-             &lt;!&ndash;以下为添加内容(生成WithBLOBS.java文件的解决方案) &ndash;&gt;
+             <!--以下为添加内容(生成WithBLOBS.java文件的解决方案) -->
              <columnOverride column="article_content" javaType="java.lang.String" jdbcType="VARCHAR"/>
              <columnOverride column="article_summary" javaType="java.lang.String" jdbcType="VARCHAR"/>
-         </table>-->
+         </table>
 
-        <table tableName="comment" domainObjectName="Comment" enableCountByExample="true"
+      <!--  <table tableName="comment" domainObjectName="Comment" enableCountByExample="true"
                enableUpdateByExample="false" enableDeleteByExample="true" enableSelectByExample="true"
                selectByExampleQueryId="false">
             <property name="my.isgen.usekeys" value="true"/>
             <property name="useActualColumnNames" value="false"/>
             <generatedKey column="id" sqlStatement="JDBC"/>
-        </table>
+        </table>-->
 
     </context>
 </generatorConfiguration>

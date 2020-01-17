@@ -3,6 +3,7 @@ package com.lzt.ssm.blog.controller.home;
 import com.github.pagehelper.PageInfo;
 import com.lzt.ssm.blog.entity.Article;
 import com.lzt.ssm.blog.entity.Category;
+import com.lzt.ssm.blog.enums.ArticleStatus;
 import com.lzt.ssm.blog.service.ArticleService;
 import com.lzt.ssm.blog.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,7 @@ public class CategoryController {
 
         HashMap<String, Object> criteria = new HashMap<>(2);
         criteria.put("categoryId", categoryId);
+        criteria.put("status", ArticleStatus.PUBLISH.getValue());
 
         PageInfo<Article> pageInfo = articleService.pageEntity(pageIndex, pageSize, criteria);
         model.addAttribute("pageInfo", pageInfo);

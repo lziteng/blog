@@ -107,7 +107,7 @@
                             <div class="layui-upload">
                                 <div class="layui-upload-list" style="">
                                     <img class="layui-upload-img" src="${option.optionAboutsiteWechat}" id="demo2"
-                                         width="100"  height="100">
+                                         width="100" height="100">
                                     <p id="demoText2"></p>
                                 </div>
                                 <button type="button" class="layui-btn" id="test2">上传图片</button>
@@ -158,10 +158,14 @@
         //上传头像
         layui.use('upload', function () {
             var $ = layui.jquery,
-                upload = layui.upload;
+                    upload = layui.upload;
             var uploadInst = upload.render({
                 elem: '#test1',
                 url: '/admin/upload/img',
+                data: {
+                    type: "other"
+                },
+                size: "1024*2",
                 before: function (obj) {
                     obj.preview(function (index, file, result) {
                         $('#demo1').attr('src', result);
@@ -169,15 +173,16 @@
                 },
                 done: function (res) {
                     $("#optionAboutsiteAvatar").attr("value", res.data.src);
-                    if (res.code > 0) {
+                    if (res.code > 0)
+                    {
                         return layer.msg('上传失败');
                     }
                 },
                 error: function () {
                     var demoText = $('#demoText');
                     demoText.html('' +
-                        '<span style="color: #FF5722;">上传失败</span>' +
-                        ' <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                            '<span style="color: #FF5722;">上传失败</span>' +
+                            ' <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
                     demoText.find('.demo-reload').on('click', function () {
                         uploadInst.upload();
                     });
@@ -188,10 +193,14 @@
         //上传微信号
         layui.use('upload', function () {
             var $ = layui.jquery,
-                upload = layui.upload;
+                    upload = layui.upload;
             var uploadInst = upload.render({
                 elem: '#test2',
                 url: '/admin/upload/img',
+                data: {
+                    type: "other"
+                },
+                size: "1024*2",
                 before: function (obj) {
                     obj.preview(function (index, file, result) {
                         $('#demo2').attr('src', result);
@@ -199,15 +208,16 @@
                 },
                 done: function (res) {
                     $("#optionAboutsiteWechat").attr("value", res.data.src);
-                    if (res.code > 0) {
+                    if (res.code > 0)
+                    {
                         return layer.msg('上传失败');
                     }
                 },
                 error: function () {
                     var demoText = $('#demoText2');
                     demoText.html('' +
-                        '<span style="color: #FF5722;">上传失败</span>' +
-                        ' <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                            '<span style="color: #FF5722;">上传失败</span>' +
+                            ' <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
                     demoText.find('.demo-reload').on('click', function () {
                         uploadInst.upload();
                     });

@@ -48,8 +48,8 @@ public class BackArticleController {
      */
     @RequestMapping(value = "")
     public ModelAndView index(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
-                              @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                              @RequestParam(required = false) String status, ModelAndView mv) {
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) String status, ModelAndView mv) {
         HashMap<String, Object> criteria = new HashMap<>(1);
         if (status == null) {
             mv.addObject("pageUrlPrefix", "/admin/article?pageIndex");
@@ -130,8 +130,8 @@ public class BackArticleController {
      * @return
      */
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
-    public String editSubmit(ArticleParm articleParm) {
-        Article article = convert(null, articleParm);
+    public String editSubmit(HttpSession session, ArticleParm articleParm) {
+        Article article = convert(session, articleParm);
         articleService.updateEntityDetail(article);
 
         return "redirect:/admin/article";
@@ -158,10 +158,18 @@ public class BackArticleController {
      */
     private Article convert(HttpSession session, ArticleParm articleParm) {
         Article article = new Article();
+        if (articleParm.getArticleId() != null) {
+            article.setArticleId(articleParm.getArticleId());
+        }
+
         User user = (User) session.getAttribute("user");
         if (user != null) {
             article.setArticleUserId(user.getUserId());
         }
+        if(!"".equals(articleParm.getArticlePhoto().trim())){
+            article.setArticlePhoto(articleParm.getArticlePhoto());
+        }
+
         article.setArticleTitle(articleParm.getArticleTitle());
         article.setArticleContent(articleParm.getArticleContent());
         article.setArticleStatus(articleParm.getArticleStatus());

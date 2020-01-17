@@ -25,18 +25,34 @@
         <div class="layui-form-item">
             <label class="layui-form-label">标题 <span style="color: #FF5722; ">*</span></label>
             <div class="layui-input-block">
-                <input type="text" name="articleTitle" lay-verify="title"  id="title" autocomplete="off"
+                <input type="text" name="articleTitle" lay-verify="title" id="title" autocomplete="off"
                        placeholder="请输入标题" class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题图片 </label>
+            <div class="layui-input-block">
+                <div class="layui-input-inline">
+                    <div class="layui-upload">
+                        <div class="layui-upload-list" style="">
+                            <img class="layui-upload-img" src="/img/thumbnail/default.jpg" id="demo1" width="200"
+                                 height="150">
+                            <p id="demoText"></p>
+                        </div>
+                        <button type="button" class="layui-btn" id="test1">上传图片</button>
+                    </div>
+                </div>
+                <input type="hidden" name="articlePhoto" id="photo" value="">
             </div>
         </div>
 
         <div class="layui-form-item layui-form-text">
             <label class="layui-form-label">内容 <span style="color: #FF5722; ">*</span></label>
             <div class="layui-input-block">
-                <textarea class="layui-textarea layui-hide" name="articleContent" lay-verify="content|myRequired" valur=""
-                          id="content"></textarea>
+                <textarea class="layui-textarea layui-hide" name="articleContent" lay-verify="content|myRequired"
+                          valur="" id="content"></textarea>
             </div>
-
         </div>
 
         <div class="layui-form-item">
@@ -75,6 +91,7 @@
                 <input type="radio" name="articleStatus" value="0" title="草稿">
             </div>
         </div>
+
         <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
@@ -93,6 +110,48 @@
 <rapid:override name="footer-script">
 
     <script>
+        //上传图片
+        layui.use('upload', function () {
+            var $ = layui.jquery,
+                    upload = layui.upload;
+            var uploadInst = upload.render({
+                elem: '#test1',
+                url: '/admin/upload/img',
+                data:{
+                  type:'article'
+                },
+                size: '1024*2',
+                before: function (obj) {
+                    obj.preview(function (index, file, result) {
+                        $('#demo1').attr('src', result);
+                    });
+                },
+                done: function (res) {
+                    $("#photo").attr("value", res.data.src);
+                    if (res.code > 0)
+                    {
+                        return layer.msg('上传失败');
+                    }
+                    var demoText = $('#demoText');
+                    demoText.html( ' <a class="layui-btn layui-btn-mini demo-delete">删除</a>');
+                    demoText.find('.demo-delete').on('click', function () {
+                        $('#demo1').attr('src', null);
+                        $("#photo").attr("value", null);
+                        $(this).remove();
+                    });
+                },
+                error: function () {
+                    var demoText = $('#demoText');
+                    demoText.html('' +
+                            '<span style="color: #FF5722;">上传失败</span>' +
+                            ' <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                }
+            });
+        });
+
         layui.use(['form', 'layedit', 'laydate'], function () {
             var form = layui.form
                     , layer = layui.layer

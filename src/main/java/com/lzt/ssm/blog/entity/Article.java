@@ -6,18 +6,22 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Created by Mybatis Generator on 2020/01/10
+ * Created by Mybatis Generator on 2020/01/17
  *
  * @author lzt
  */
 @Data
 public class Article implements Serializable {
+
     private static final long serialVersionUID = -4426501159181325646L;
+
     private Integer articleId;
 
     private Integer articleUserId;
 
     private String articleTitle;
+
+    private String articlePhoto;
 
     private String articleContent;
 
@@ -27,9 +31,6 @@ public class Article implements Serializable {
 
     private Integer articleLikeCount;
 
-    /**
-     * 是否可评价
-     */
     private Integer articleIsComment;
 
     private Integer articleStatus;
