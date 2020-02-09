@@ -1,21 +1,16 @@
 package com.lzt.ssm.blog.controller.admin;
 
 import com.lzt.ssm.blog.entity.Page;
+import com.lzt.ssm.blog.exception.ReturnViewException;
 import com.lzt.ssm.blog.service.PageService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author: lzt
@@ -73,7 +68,7 @@ public class BackPageController {
     }
 
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
-    public String insertSubmit(Page page) {
+    public String insertSubmit(Page page) throws Exception {
         page.setPageCreateTime(new Date());
         page.setPageUpdateTime(new Date());
         page.setPageViewCount(0);
@@ -84,8 +79,11 @@ public class BackPageController {
     }
 
     @RequestMapping("/edit/{id}")
-    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) {
+    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) throws Exception {
         Page page = pageService.getEntityById(id);
+        if (page == null) {
+            throw new ReturnViewException("页面不存在");
+        }
         mv.addObject("page", page);
 
         mv.setViewName("Admin/Page/edit");
@@ -93,14 +91,14 @@ public class BackPageController {
     }
 
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
-    public String editSubmit(Page page) {
+    public String editSubmit(Page page) throws Exception {
         page.setPageUpdateTime(new Date());
         pageService.updateEntity(page);
         return "redirect:/admin/page";
     }
 
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Integer id) throws Exception {
         pageService.deleteEntityById(id);
         return "redirect:/admin/page";
     }

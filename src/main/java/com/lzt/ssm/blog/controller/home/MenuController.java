@@ -37,7 +37,7 @@ public class MenuController {
 
     @RequestMapping(value = "/applyLinkSubmit", method = RequestMethod.POST)
     @ResponseBody
-    public void applyLinkSubmit(Link link, HttpSession session) {
+    public void applyLinkSubmit(Link link, HttpSession session) throws Exception {
         link.setLinkStatus(LinkStatus.HIDDEN.getValue());
         link.setLinkCreateTime(new Date());
         link.setLinkUpdateTime(new Date());

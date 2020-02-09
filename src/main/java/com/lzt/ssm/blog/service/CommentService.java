@@ -25,7 +25,7 @@ public interface CommentService extends BaseCrudService<Comment> {
      * @param pageSize  每页条数
      * @return 所有评论记录
      */
-    PageInfo<Comment> listCommentByPage(Integer pageIndex, Integer pageSize);
+    PageInfo<Comment> listCommentByPage(Integer pageIndex, Integer pageSize) throws Exception;
 
     /**
      * 根据文章id获取所有评论记录
@@ -57,6 +57,6 @@ public interface CommentService extends BaseCrudService<Comment> {
      * @param limit 查询数量
      * @return 评价记录列表
      */
-    List<Comment> listRecentComment(Integer limit);
+    List<Comment> listRecentComment(Integer limit) throws Exception;
 
 }

@@ -13,21 +13,21 @@ public interface BaseCrudService<T> {
      *
      * @param t 记录实体
      */
-    void insertEntity(T t);
+    void insertEntity(T t) throws Exception;
 
     /**
      * 根据id删除记录
      *
      * @param id id
      */
-    void deleteEntityById(Integer id);
+    void deleteEntityById(Integer id) throws Exception;
 
     /**
      * 更新记录
      *
      * @param t 记录
      */
-    void updateEntity(T t);
+    void updateEntity(T t) throws Exception;
 
     /**
      * 根据id获取记录
@@ -35,5 +35,5 @@ public interface BaseCrudService<T> {
      * @param id
      * @return
      */
-    T getEntityById(Integer id);
+    T getEntityById(Integer id) throws Exception;
 }

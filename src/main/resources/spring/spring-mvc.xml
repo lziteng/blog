@@ -16,7 +16,10 @@
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd">
 
-    <context:component-scan base-package="com.lzt.ssm.blog.controller" />
+    <context:component-scan base-package="com.lzt.ssm.blog.controller"/>
+
+    <!--全局异常处理解析器-->
+    <bean class="com.lzt.ssm.blog.exception.IntegrateException"/>
 
     <!--注解驱动，以使得访问路径与方法的匹配可以通过注解配置-->
     <mvc:annotation-driven></mvc:annotation-driven>
@@ -24,7 +27,7 @@
     <!-- 配置视图解析器
         进行jsp解析，默认使用jstl标签，classpath下得有jstl的包
     -->
-    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver" >
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <!--配置前缀和后缀，也可以不指定-->
         <property name="prefix" value="/WEB-INF/view/"/>
         <property name="suffix" value=".jsp"/>
@@ -37,7 +40,6 @@
         <property name="defaultEncoding" value="UTF-8"/>
         <property name="resolveLazily" value="true"/>
     </bean>
-
 
 
     <!-- 静态资源映射 -->

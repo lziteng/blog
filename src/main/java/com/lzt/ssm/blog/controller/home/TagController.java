@@ -1,17 +1,14 @@
 package com.lzt.ssm.blog.controller.home;
 
 import com.github.pagehelper.PageInfo;
-import com.lzt.ssm.blog.entity.Article;
-import com.lzt.ssm.blog.entity.Tag;
+import com.lzt.ssm.blog.entity.*;
 import com.lzt.ssm.blog.enums.ArticleStatus;
-import com.lzt.ssm.blog.service.ArticleService;
-import com.lzt.ssm.blog.service.TagService;
+import com.lzt.ssm.blog.exception.ReturnViewException;
+import com.lzt.ssm.blog.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
@@ -30,12 +27,11 @@ public class TagController {
 
     @RequestMapping("/tag/{tagId}")
     public String getArticleListByTag(@PathVariable("tagId") Integer tagId,
-                                      @RequestParam(required = false, defaultValue = "1") Integer pageIndex,
-                                      @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-                                      Model model) {
+            @RequestParam(required = false, defaultValue = "1") Integer pageIndex,
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize, Model model) throws Exception {
         Tag tag = tagService.getEntityById(tagId);
         if (tag == null) {
-            return "Home/Error/404";
+            throw new ReturnViewException("获取标签异常");
         }
         model.addAttribute("tag", tag);
 

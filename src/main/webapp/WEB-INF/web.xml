@@ -42,6 +42,11 @@
         </listener-class>
     </listener>
 
+    <!--防止spring内存溢出 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
+
 
     <!-- 以下3项参数与log4j的配置相关 -->
     <context-param>

@@ -39,7 +39,7 @@
                     <div class="layui-upload">
                         <div class="layui-upload-list" style="">
                             <c:choose>
-                                <c:when test="${article.articlePhoto != null}">
+                                <c:when test="${a.articlePhoto != null && a.articlePhoto != ''}">
                                     <img class="layui-upload-img" src="${article.articlePhoto}" id="demo1" width="200"
                                          height="150">
                                     <p id="demoText">

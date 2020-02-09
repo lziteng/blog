@@ -5,6 +5,7 @@ import cn.hutool.http.HtmlUtil;
 import com.github.pagehelper.PageInfo;
 import com.lzt.ssm.blog.dto.ArticleParm;
 import com.lzt.ssm.blog.entity.*;
+import com.lzt.ssm.blog.exception.ReturnViewException;
 import com.lzt.ssm.blog.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import java.util.*;
 @Controller
 @RequestMapping("/admin/article")
 public class BackArticleController {
+
 
     @Autowired
     private ArticleService articleService;
@@ -48,8 +50,8 @@ public class BackArticleController {
      */
     @RequestMapping(value = "")
     public ModelAndView index(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
-            @RequestParam(required = false, defaultValue = "10") Integer pageSize,
-            @RequestParam(required = false) String status, ModelAndView mv) {
+                              @RequestParam(required = false, defaultValue = "10") Integer pageSize,
+                              @RequestParam(required = false) String status, ModelAndView mv) {
         HashMap<String, Object> criteria = new HashMap<>(1);
         if (status == null) {
             mv.addObject("pageUrlPrefix", "/admin/article?pageIndex");
@@ -90,14 +92,18 @@ public class BackArticleController {
      * @return
      */
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
-    public String insertSubmit(HttpSession session, ArticleParm articleParm) {
+    public String insertSubmit(HttpSession session, ArticleParm articleParm) throws Exception {
         Article article = convert(session, articleParm);
         Integer maxOrder = articleService.getMaxOrder();
         if (maxOrder == null) {
             maxOrder = 0;
         }
         article.setArticleOrder(++maxOrder);
-        articleService.insertEntity(article);
+        try {
+            articleService.insertEntity(article);
+        } catch (Exception e) {
+            throw new ReturnViewException("添加文章异常");
+        }
         return "redirect:/admin/article";
     }
 
@@ -109,14 +115,16 @@ public class BackArticleController {
      * @return
      */
     @RequestMapping("/edit/{id}")
-    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) {
+    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) throws Exception {
         List<Category> categoryList = categoryService.listEntity();
         mv.addObject("categoryList", categoryList);
-
         List<Tag> tagList = tagService.listEntity();
         mv.addObject("tagList", tagList);
 
         Article article = articleService.getEntityByStatusAndId(null, id);
+        if (article == null) {
+            throw new ReturnViewException("获取文章(id:" + id + ")异常");
+        }
         mv.addObject("article", article);
 
         mv.setViewName("Admin/Article/edit");
@@ -130,9 +138,13 @@ public class BackArticleController {
      * @return
      */
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
-    public String editSubmit(HttpSession session, ArticleParm articleParm) {
+    public String editSubmit(HttpSession session, ArticleParm articleParm) throws Exception {
         Article article = convert(session, articleParm);
-        articleService.updateEntityDetail(article);
+        try {
+            articleService.updateEntityDetail(article);
+        } catch (Exception e) {
+            throw new ReturnViewException("修改文章异常");
+        }
 
         return "redirect:/admin/article";
     }
@@ -144,7 +156,7 @@ public class BackArticleController {
      * @return
      */
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Integer id) throws Exception {
         articleService.deleteEntityById(id);
         return "redirect:/admin/article";
     }
@@ -156,7 +168,7 @@ public class BackArticleController {
      * @param articleParm form表单
      * @return 文章
      */
-    private Article convert(HttpSession session, ArticleParm articleParm) {
+    private Article convert(HttpSession session, ArticleParm articleParm) throws Exception {
         Article article = new Article();
         if (articleParm.getArticleId() != null) {
             article.setArticleId(articleParm.getArticleId());
@@ -166,13 +178,13 @@ public class BackArticleController {
         if (user != null) {
             article.setArticleUserId(user.getUserId());
         }
-        if(!"".equals(articleParm.getArticlePhoto().trim())){
-            article.setArticlePhoto(articleParm.getArticlePhoto());
-        }
+
+        article.setArticlePhoto(articleParm.getArticlePhoto());
 
         article.setArticleTitle(articleParm.getArticleTitle());
         article.setArticleContent(articleParm.getArticleContent());
         article.setArticleStatus(articleParm.getArticleStatus());
+
 
         //文章摘要
         int summaryLength = 150;
@@ -214,23 +226,27 @@ public class BackArticleController {
      */
     @RequestMapping("/move/{id}/{direction}")
     @ResponseBody
-    public String move(@PathVariable("id") Integer id, @PathVariable("direction") String direction) {
-        Article nowEntity = articleService.getEntityById(id);
-        Integer nowOrder = nowEntity.getArticleOrder();
+    public String move(@PathVariable("id") Integer id, @PathVariable("direction") String direction) throws Exception {
+        try {
+            Article nowEntity = articleService.getEntityById(id);
+            Integer nowOrder = nowEntity.getArticleOrder();
 
-        //由于按排序号、id降序排序，所有将上下移动操作互换
-        if (DOWN.equals(direction)) {
-            Article preEntity = articleService.getPreEntityByOrder(null, nowOrder);
-            nowEntity.setArticleOrder(preEntity.getArticleOrder());
-            preEntity.setArticleOrder(nowOrder);
-            articleService.updateEntity(nowEntity);
-            articleService.updateEntity(preEntity);
-        } else if (UP.equals(direction)) {
-            Article nextEntity = articleService.getNextEntityByOrder(null, nowOrder);
-            nowEntity.setArticleOrder(nextEntity.getArticleOrder());
-            nextEntity.setArticleOrder(nowOrder);
-            articleService.updateEntity(nowEntity);
-            articleService.updateEntity(nextEntity);
+            //由于按排序号、id降序排序，所有将上下移动操作互换
+            if (DOWN.equals(direction)) {
+                Article preEntity = articleService.getPreEntityByOrder(null, nowOrder);
+                nowEntity.setArticleOrder(preEntity.getArticleOrder());
+                preEntity.setArticleOrder(nowOrder);
+                articleService.updateEntity(nowEntity);
+                articleService.updateEntity(preEntity);
+            } else if (UP.equals(direction)) {
+                Article nextEntity = articleService.getNextEntityByOrder(null, nowOrder);
+                nowEntity.setArticleOrder(nextEntity.getArticleOrder());
+                nextEntity.setArticleOrder(nowOrder);
+                articleService.updateEntity(nowEntity);
+                articleService.updateEntity(nextEntity);
+            }
+        } catch (Exception e) {
+            throw new ReturnViewException("移动文章出现异常");
         }
 
         return "success";

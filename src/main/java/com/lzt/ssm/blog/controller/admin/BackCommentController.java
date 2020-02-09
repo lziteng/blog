@@ -4,6 +4,7 @@ import cn.hutool.http.HtmlUtil;
 import com.github.pagehelper.PageInfo;
 import com.lzt.ssm.blog.entity.*;
 import com.lzt.ssm.blog.enums.ArticleStatus;
+import com.lzt.ssm.blog.exception.*;
 import com.lzt.ssm.blog.service.*;
 import com.lzt.ssm.blog.util.MyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +31,7 @@ public class BackCommentController {
 
     @RequestMapping("")
     public ModelAndView index(@RequestParam(required = false, defaultValue = "1") Integer pageIndex,
-            @RequestParam(required = false, defaultValue = "10") Integer pageSize, ModelAndView mv) {
+            @RequestParam(required = false, defaultValue = "10") Integer pageSize, ModelAndView mv) throws Exception {
         PageInfo<Comment> pageInfo = commentService.listCommentByPage(pageIndex, pageSize);
         mv.addObject("pageInfo", pageInfo);
         mv.addObject("pageUrlPrefix", "/admin/comment?pageIndex");
@@ -40,8 +41,11 @@ public class BackCommentController {
     }
 
     @RequestMapping("/edit/{commentId}")
-    public ModelAndView editView(@PathVariable("commentId") Integer commentId, ModelAndView mv) {
+    public ModelAndView editView(@PathVariable("commentId") Integer commentId, ModelAndView mv) throws Exception {
         Comment comment = commentService.getEntityById(commentId);
+        if (comment == null) {
+            throw new ReturnViewException("评论不存在");
+        }
         mv.addObject("comment", comment);
 
         mv.setViewName("Admin/Comment/edit");
@@ -49,14 +53,17 @@ public class BackCommentController {
     }
 
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
-    public String editSubmit(Comment comment) {
+    public String editSubmit(Comment comment) throws Exception {
         commentService.updateEntity(comment);
         return "redirect:/admin/comment";
     }
 
     @RequestMapping("/reply/{commentId}")
-    public ModelAndView replyView(@PathVariable("commentId") Integer commentId, ModelAndView mv) {
+    public ModelAndView replyView(@PathVariable("commentId") Integer commentId, ModelAndView mv) throws Exception {
         Comment comment = commentService.getEntityById(commentId);
+        if (comment == null) {
+            throw new ReturnViewException("评论不存在");
+        }
         mv.addObject("comment", comment);
 
         mv.setViewName("Admin/Comment/reply");
@@ -64,7 +71,7 @@ public class BackCommentController {
     }
 
     @RequestMapping(value = "/replySubmit", method = RequestMethod.POST)
-    public String replySubmit(Comment comment, HttpServletRequest request) {
+    public String replySubmit(Comment comment, HttpServletRequest request) throws Exception {
         comment.setCommentCreateTime(new Date());
         comment.setCommentIp(MyUtils.getIp(request));
 
@@ -92,8 +99,11 @@ public class BackCommentController {
     }
 
     @RequestMapping(value = "/delete/{commentId}", method = RequestMethod.POST)
-    public void delete(@PathVariable("commentId") Integer commentId) {
+    public void delete(@PathVariable("commentId") Integer commentId) throws Exception {
         Comment comment = commentService.getEntityById(commentId);
+        if (comment == null) {
+            throw new CustomException("该评论不存在");
+        }
 
         commentService.deleteChildComment(commentId);
         commentService.deleteEntityById(commentId);

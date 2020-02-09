@@ -35,7 +35,7 @@ public class AdminController {
      * @return
      */
     @RequestMapping("/admin")
-    public String index(Model model) {
+    public String index(Model model) throws Exception {
         //最新发布
         List<Article> articleList = articleService.listRecentArticle(5);
         model.addAttribute("articleList", articleList);
@@ -60,7 +60,7 @@ public class AdminController {
      */
     @RequestMapping(value = "/loginVerify", method = RequestMethod.POST)
     @ResponseBody
-    public String loginVerify(HttpServletRequest request, HttpServletResponse response) {
+    public String loginVerify(HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, Object> map = new HashMap<String, Object>();
         String username = request.getParameter("username");
         String password = request.getParameter("password");

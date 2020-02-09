@@ -31,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public PageInfo<Comment> listCommentByPage(Integer pageIndex, Integer pageSize) {
+    public PageInfo<Comment> listCommentByPage(Integer pageIndex, Integer pageSize) throws Exception {
         PageHelper.startPage(pageIndex, pageSize);
 
         List<Comment> commentList = listComment();
@@ -74,7 +74,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> listRecentComment(Integer limit) {
+    public List<Comment> listRecentComment(Integer limit) throws Exception {
         PageHelper.startPage(1, limit);
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria().andCommentRoleEqualTo(0);

@@ -6,12 +6,23 @@
 
     <!-- 全局配置 -->
     <settings>
+        <!-- 全局映射器启用缓存 *主要将此属性设置完成即可 -->
+        <setting name="cacheEnabled" value="true"/>
+
+        <!--查询时，关闭关连对象即时加载以提高性能 -->
+        <setting name="lazyLoadingEnabled" value="false"/>
+        <!-- 设置关联对象加载的形态，此处为按需要加载字段（加载字段由sql决定），不会加载关联表的所有字段，以提高性能 -->
+        <setting name="aggressiveLazyLoading" value="true"/>
+
         <!--允许 JDBC 支持自动生成主键-->
         <setting name="useGeneratedKeys" value="false"/>
 
         <!--是否开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN 到经典
             Java 属性名 aColumn 的类似映射。-->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+
+        <!-- 打印查询语句 -->
+<!--        <setting name="logImpl" value="STDOUT_LOGGING" />-->
     </settings>
 
     <plugins>

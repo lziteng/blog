@@ -28,7 +28,7 @@ public class CommentController {
 
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult comment(Comment comment, HttpServletRequest request) {
+    public JsonResult comment(Comment comment, HttpServletRequest request) throws Exception {
         comment.setCommentCreateTime(new Date());
         comment.setCommentRole(0);
         comment.setCommentIp(MyUtils.getIp(request));

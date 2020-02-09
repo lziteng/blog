@@ -1,38 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lzt.ssm.blog.mapper.ArticleMapper">
-  <resultMap id="BaseResultMap" type="com.lzt.ssm.blog.entity.Article">
-    <id column="article_id" jdbcType="INTEGER" property="articleId" />
-    <result column="article_user_id" jdbcType="INTEGER" property="articleUserId" />
-    <result column="article_title" jdbcType="VARCHAR" property="articleTitle" />
-    <result column="article_photo" jdbcType="VARCHAR" property="articlePhoto" />
-    <result column="article_content" jdbcType="VARCHAR" property="articleContent" />
-    <result column="article_view_count" jdbcType="INTEGER" property="articleViewCount" />
-    <result column="article_comment_count" jdbcType="INTEGER" property="articleCommentCount" />
-    <result column="article_like_count" jdbcType="INTEGER" property="articleLikeCount" />
-    <result column="article_is_comment" jdbcType="INTEGER" property="articleIsComment" />
-    <result column="article_status" jdbcType="INTEGER" property="articleStatus" />
-    <result column="article_order" jdbcType="INTEGER" property="articleOrder" />
-    <result column="article_update_time" jdbcType="TIMESTAMP" property="articleUpdateTime" />
-    <result column="article_create_time" jdbcType="TIMESTAMP" property="articleCreateTime" />
-    <result column="article_summary" jdbcType="VARCHAR" property="articleSummary" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.lzt.ssm.blog.entity.Article">
+        <id column="article_id" jdbcType="INTEGER" property="articleId"/>
+        <result column="article_user_id" jdbcType="INTEGER" property="articleUserId"/>
+        <result column="article_title" jdbcType="VARCHAR" property="articleTitle"/>
+        <result column="article_photo" jdbcType="VARCHAR" property="articlePhoto"/>
+        <result column="article_content" jdbcType="VARCHAR" property="articleContent"/>
+        <result column="article_view_count" jdbcType="INTEGER" property="articleViewCount"/>
+        <result column="article_comment_count" jdbcType="INTEGER" property="articleCommentCount"/>
+        <result column="article_like_count" jdbcType="INTEGER" property="articleLikeCount"/>
+        <result column="article_is_comment" jdbcType="INTEGER" property="articleIsComment"/>
+        <result column="article_status" jdbcType="INTEGER" property="articleStatus"/>
+        <result column="article_order" jdbcType="INTEGER" property="articleOrder"/>
+        <result column="article_update_time" jdbcType="TIMESTAMP" property="articleUpdateTime"/>
+        <result column="article_create_time" jdbcType="TIMESTAMP" property="articleCreateTime"/>
+        <result column="article_summary" jdbcType="VARCHAR" property="articleSummary"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     article_id, article_user_id, article_title, article_photo, article_content, article_view_count, 
     article_comment_count, article_like_count, article_is_comment, article_status, article_order, 
     article_update_time, article_create_time, article_summary
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from article
-    where article_id = #{articleId,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where article_id = #{articleId,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from article
     where article_id = #{articleId,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.lzt.ssm.blog.entity.Article">
+    <insert id="insert" parameterType="com.lzt.ssm.blog.entity.Article">
     insert into article (article_id, article_user_id, article_title, 
       article_photo, article_content, article_view_count, 
       article_comment_count, article_like_count, 
@@ -46,143 +46,144 @@
       #{articleUpdateTime,jdbcType=TIMESTAMP}, #{articleCreateTime,jdbcType=TIMESTAMP}, 
       #{articleSummary,jdbcType=VARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.lzt.ssm.blog.entity.Article" useGeneratedKeys="true" keyProperty="articleId">
-    insert into article
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="articleId != null">
-        article_id,
-      </if>
-      <if test="articleUserId != null">
-        article_user_id,
-      </if>
-      <if test="articleTitle != null">
-        article_title,
-      </if>
-      <if test="articlePhoto != null">
-        article_photo,
-      </if>
-      <if test="articleContent != null">
-        article_content,
-      </if>
-      <if test="articleViewCount != null">
-        article_view_count,
-      </if>
-      <if test="articleCommentCount != null">
-        article_comment_count,
-      </if>
-      <if test="articleLikeCount != null">
-        article_like_count,
-      </if>
-      <if test="articleIsComment != null">
-        article_is_comment,
-      </if>
-      <if test="articleStatus != null">
-        article_status,
-      </if>
-      <if test="articleOrder != null">
-        article_order,
-      </if>
-      <if test="articleUpdateTime != null">
-        article_update_time,
-      </if>
-      <if test="articleCreateTime != null">
-        article_create_time,
-      </if>
-      <if test="articleSummary != null">
-        article_summary,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="articleId != null">
-        #{articleId,jdbcType=INTEGER},
-      </if>
-      <if test="articleUserId != null">
-        #{articleUserId,jdbcType=INTEGER},
-      </if>
-      <if test="articleTitle != null">
-        #{articleTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="articlePhoto != null">
-        #{articlePhoto,jdbcType=VARCHAR},
-      </if>
-      <if test="articleContent != null">
-        #{articleContent,jdbcType=VARCHAR},
-      </if>
-      <if test="articleViewCount != null">
-        #{articleViewCount,jdbcType=INTEGER},
-      </if>
-      <if test="articleCommentCount != null">
-        #{articleCommentCount,jdbcType=INTEGER},
-      </if>
-      <if test="articleLikeCount != null">
-        #{articleLikeCount,jdbcType=INTEGER},
-      </if>
-      <if test="articleIsComment != null">
-        #{articleIsComment,jdbcType=INTEGER},
-      </if>
-      <if test="articleStatus != null">
-        #{articleStatus,jdbcType=INTEGER},
-      </if>
-      <if test="articleOrder != null">
-        #{articleOrder,jdbcType=INTEGER},
-      </if>
-      <if test="articleUpdateTime != null">
-        #{articleUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="articleCreateTime != null">
-        #{articleCreateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="articleSummary != null">
-        #{articleSummary,jdbcType=VARCHAR},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.lzt.ssm.blog.entity.Article">
-    update article
-    <set>
-      <if test="articleUserId != null">
-        article_user_id = #{articleUserId,jdbcType=INTEGER},
-      </if>
-      <if test="articleTitle != null">
-        article_title = #{articleTitle,jdbcType=VARCHAR},
-      </if>
-      <if test="articlePhoto != null">
-        article_photo = #{articlePhoto,jdbcType=VARCHAR},
-      </if>
-      <if test="articleContent != null">
-        article_content = #{articleContent,jdbcType=VARCHAR},
-      </if>
-      <if test="articleViewCount != null">
-        article_view_count = #{articleViewCount,jdbcType=INTEGER},
-      </if>
-      <if test="articleCommentCount != null">
-        article_comment_count = #{articleCommentCount,jdbcType=INTEGER},
-      </if>
-      <if test="articleLikeCount != null">
-        article_like_count = #{articleLikeCount,jdbcType=INTEGER},
-      </if>
-      <if test="articleIsComment != null">
-        article_is_comment = #{articleIsComment,jdbcType=INTEGER},
-      </if>
-      <if test="articleStatus != null">
-        article_status = #{articleStatus,jdbcType=INTEGER},
-      </if>
-      <if test="articleOrder != null">
-        article_order = #{articleOrder,jdbcType=INTEGER},
-      </if>
-      <if test="articleUpdateTime != null">
-        article_update_time = #{articleUpdateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="articleCreateTime != null">
-        article_create_time = #{articleCreateTime,jdbcType=TIMESTAMP},
-      </if>
-      <if test="articleSummary != null">
-        article_summary = #{articleSummary,jdbcType=VARCHAR},
-      </if>
-    </set>
-    where article_id = #{articleId,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.lzt.ssm.blog.entity.Article">
+    <insert id="insertSelective" parameterType="com.lzt.ssm.blog.entity.Article" useGeneratedKeys="true"
+            keyProperty="articleId">
+        insert into article
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">
+                article_id,
+            </if>
+            <if test="articleUserId != null">
+                article_user_id,
+            </if>
+            <if test="articleTitle != null">
+                article_title,
+            </if>
+            <if test="articlePhoto != null">
+                article_photo,
+            </if>
+            <if test="articleContent != null">
+                article_content,
+            </if>
+            <if test="articleViewCount != null">
+                article_view_count,
+            </if>
+            <if test="articleCommentCount != null">
+                article_comment_count,
+            </if>
+            <if test="articleLikeCount != null">
+                article_like_count,
+            </if>
+            <if test="articleIsComment != null">
+                article_is_comment,
+            </if>
+            <if test="articleStatus != null">
+                article_status,
+            </if>
+            <if test="articleOrder != null">
+                article_order,
+            </if>
+            <if test="articleUpdateTime != null">
+                article_update_time,
+            </if>
+            <if test="articleCreateTime != null">
+                article_create_time,
+            </if>
+            <if test="articleSummary != null">
+                article_summary,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="articleId != null">
+                #{articleId,jdbcType=INTEGER},
+            </if>
+            <if test="articleUserId != null">
+                #{articleUserId,jdbcType=INTEGER},
+            </if>
+            <if test="articleTitle != null">
+                #{articleTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="articlePhoto != null">
+                #{articlePhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="articleContent != null">
+                #{articleContent,jdbcType=VARCHAR},
+            </if>
+            <if test="articleViewCount != null">
+                #{articleViewCount,jdbcType=INTEGER},
+            </if>
+            <if test="articleCommentCount != null">
+                #{articleCommentCount,jdbcType=INTEGER},
+            </if>
+            <if test="articleLikeCount != null">
+                #{articleLikeCount,jdbcType=INTEGER},
+            </if>
+            <if test="articleIsComment != null">
+                #{articleIsComment,jdbcType=INTEGER},
+            </if>
+            <if test="articleStatus != null">
+                #{articleStatus,jdbcType=INTEGER},
+            </if>
+            <if test="articleOrder != null">
+                #{articleOrder,jdbcType=INTEGER},
+            </if>
+            <if test="articleUpdateTime != null">
+                #{articleUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="articleCreateTime != null">
+                #{articleCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="articleSummary != null">
+                #{articleSummary,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.lzt.ssm.blog.entity.Article">
+        update article
+        <set>
+            <if test="articleUserId != null">
+                article_user_id = #{articleUserId,jdbcType=INTEGER},
+            </if>
+            <if test="articleTitle != null">
+                article_title = #{articleTitle,jdbcType=VARCHAR},
+            </if>
+            <if test="articlePhoto != null">
+                article_photo = #{articlePhoto,jdbcType=VARCHAR},
+            </if>
+            <if test="articleContent != null">
+                article_content = #{articleContent,jdbcType=VARCHAR},
+            </if>
+            <if test="articleViewCount != null">
+                article_view_count = #{articleViewCount,jdbcType=INTEGER},
+            </if>
+            <if test="articleCommentCount != null">
+                article_comment_count = #{articleCommentCount,jdbcType=INTEGER},
+            </if>
+            <if test="articleLikeCount != null">
+                article_like_count = #{articleLikeCount,jdbcType=INTEGER},
+            </if>
+            <if test="articleIsComment != null">
+                article_is_comment = #{articleIsComment,jdbcType=INTEGER},
+            </if>
+            <if test="articleStatus != null">
+                article_status = #{articleStatus,jdbcType=INTEGER},
+            </if>
+            <if test="articleOrder != null">
+                article_order = #{articleOrder,jdbcType=INTEGER},
+            </if>
+            <if test="articleUpdateTime != null">
+                article_update_time = #{articleUpdateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="articleCreateTime != null">
+                article_create_time = #{articleCreateTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="articleSummary != null">
+                article_summary = #{articleSummary,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where article_id = #{articleId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.lzt.ssm.blog.entity.Article">
     update article
     set article_user_id = #{articleUserId,jdbcType=INTEGER},
       article_title = #{articleTitle,jdbcType=VARCHAR},
@@ -200,140 +201,140 @@
     where article_id = #{articleId,jdbcType=INTEGER}
   </update>
 
-  <!--手动维护区域-->
-     <select id="listEntity" resultMap="BaseResultMap">
-         select a.* from article as a
-         <where>
-             <if test="status != null">
-                 a.article_status = #{status} and
-             </if>
-             <if test="keywords != null">
-                 a.article_title like concat(concat('%',#{keywords}),'%') and
-             </if>
-             <if test="userId != null">
-                 a.article_user_id = #{userId} and
-             </if>
-             <if test="categoryId != null">
-                 a.article_id in (
-                 select acr.article_id from article_category_ref as acr where acr.category_id = #{categoryId}
-                 ) and
-             </if>
-             <if test="tagId != null">
-                 a.article_id in (
-                 select atr.article_id from article_tag_ref as atr where atr.tag_id = #{tagId}
-                 ) and
-             </if>
-             1 = 1
-         </where>
-         order by a.article_order desc, a.article_id desc
-     </select>
+    <!--手动维护区域-->
+    <select id="listEntity" resultMap="BaseResultMap">
+        select a.* from article as a
+        <where>
+            <if test="status != null">
+                a.article_status = #{status} and
+            </if>
+            <if test="keywords != null">
+                a.article_title like concat(concat('%',#{keywords}),'%') and
+            </if>
+            <if test="userId != null">
+                a.article_user_id = #{userId} and
+            </if>
+            <if test="categoryId != null">
+                a.article_id in (
+                select acr.article_id from article_category_ref as acr where acr.category_id = #{categoryId}
+                ) and
+            </if>
+            <if test="tagId != null">
+                a.article_id in (
+                select atr.article_id from article_tag_ref as atr where atr.tag_id = #{tagId}
+                ) and
+            </if>
+            1 = 1
+        </where>
+        order by a.article_order desc, a.article_id desc
+    </select>
 
-     <select id="getEntityByStatusAndId" resultType="com.lzt.ssm.blog.entity.Article">
-         select
-         <include refid="Base_Column_List"/>
-         from article
-         <where>
-             <if test="status != null">
-                 article_status = #{status} and
-             </if>
-             article_id = #{id}
-         </where>
-     </select>
+    <select id="getEntityByStatusAndId" resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        <where>
+            <if test="status != null">
+                article_status = #{status} and
+            </if>
+            article_id = #{id}
+        </where>
+    </select>
 
-     <select id="countEntity" resultType="java.lang.Integer">
+    <select id="countEntity" resultType="java.lang.Integer">
          select count(*) from article where article_status = #{status}
      </select>
 
-     <select id="getMaxOrder" resultType="java.lang.Integer">
+    <select id="getMaxOrder" resultType="java.lang.Integer">
          select max(article_order) from article
      </select>
 
-     <select id="getPreEntityByOrder" resultType="com.lzt.ssm.blog.entity.Article">
-         select
-         <include refid="Base_Column_List"/>
-         from article
-         <where>
-             <if test="condition != null">
-                 article_status = #{condition} and
-             </if>
-             article_order &lt; #{order}
-         </where>
-         order by article_order desc limit 1
-     </select>
+    <select id="getPreEntityByOrder" resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        <where>
+            <if test="condition != null">
+                article_status = #{condition} and
+            </if>
+            article_order &lt; #{order}
+        </where>
+        order by article_order desc limit 1
+    </select>
 
-     <select id="getNextEntityByOrder" resultType="com.lzt.ssm.blog.entity.Article">
-         select
-         <include refid="Base_Column_List"/>
-         from article
-         <where>
-             <if test="condition != null">
-                 article_status = #{condition} and
-             </if>
-             article_order > #{order}
-         </where>
-         order by article_order asc limit 1
-     </select>
+    <select id="getNextEntityByOrder" resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        <where>
+            <if test="condition != null">
+                article_status = #{condition} and
+            </if>
+            article_order > #{order}
+        </where>
+        order by article_order asc limit 1
+    </select>
 
-     <select id="listRecentArticleByLimit" parameterType="java.lang.Integer"
-             resultType="com.lzt.ssm.blog.entity.Article">
-         select
-         <include refid="Base_Column_List"/>
-         from article
-         where article_status = 1
-         order by article_create_time desc
-         limit #{value}
-     </select>
+    <select id="listRecentArticleByLimit" parameterType="java.lang.Integer"
+            resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where article_status = 1
+        order by article_create_time desc
+        limit #{value}
+    </select>
 
-     <select id="getLastUpdateArticle" resultType="com.lzt.ssm.blog.entity.Article">
-         select
-         <include refid="Base_Column_List"/>
-         from article
-         where article_status = 1
-         order by article_update_time desc
-         limit 1
-     </select>
+    <select id="getLastUpdateArticle" resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where article_status = 1
+        order by article_update_time desc
+        limit 1
+    </select>
 
-     <select id="findArticleByCategoryIds" resultType="com.lzt.ssm.blog.entity.Article">
-         select
-         distinct
-         a.article_id, a.article_user_id, a.article_title, a.article_content, a.article_view_count,
-         a.article_comment_count, a.article_like_count, a.article_is_comment, a.article_status, a.article_order,
-         a.article_update_time, a.article_create_time, a.article_summary
-         from article as a, article_category_ref as acr
-         <where>
-             a.article_status = 1 and
-             a.article_id = acr.article_id
-             <if test="categoryIds != null">
-                 and
-                 acr.category_id in
-                 <foreach collection="categoryIds" open="(" close=")" separator="," item="id">
-                     #{id}
-                 </foreach>
-             </if>
-         </where>
-         order by a.article_order
-         limit #{limit}
-     </select>
+    <select id="findArticleByCategoryIds" resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        distinct
+        a.article_id, a.article_user_id, a.article_title, a.article_content, a.article_view_count,
+        a.article_comment_count, a.article_like_count, a.article_is_comment, a.article_status, a.article_order,
+        a.article_update_time, a.article_create_time, a.article_summary
+        from article as a, article_category_ref as acr
+        <where>
+            a.article_status = 1 and
+            a.article_id = acr.article_id
+            <if test="categoryIds != null">
+                and
+                acr.category_id in
+                <foreach collection="categoryIds" open="(" close=")" separator="," item="id">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+        order by a.article_order
+        limit #{limit}
+    </select>
 
-     <select id="listArticleByViewCount" resultType="com.lzt.ssm.blog.entity.Article">
-         select
-         <include refid="Base_Column_List"/>
-         from article
-         where article_status = 1
-         order by article_view_count desc
-         limit #{limit}
-     </select>
+    <select id="listArticleByViewCount" resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where article_status = 1
+        order by article_view_count desc
+        limit #{limit}
+    </select>
 
-     <select id="listRandomArticle" resultType="com.lzt.ssm.blog.entity.Article">
-         select
-         <include refid="Base_Column_List"/>
-         from article
-         where article_status = 1
-         order by RAND()
-         limit #{limit}
-     </select>
+    <select id="listRandomArticle" resultType="com.lzt.ssm.blog.entity.Article">
+        select
+        <include refid="Base_Column_List"/>
+        from article
+        where article_status = 1
+        order by RAND()
+        limit #{limit}
+    </select>
 
-     <select id="listAllNotWithContent" resultType="com.lzt.ssm.blog.entity.Article">
+    <select id="listAllNotWithContent" resultType="com.lzt.ssm.blog.entity.Article">
          select
          a.article_id, a.article_user_id, a.article_title, a.article_create_time
          from article as a
@@ -341,7 +342,7 @@
          order by a.article_order desc
      </select>
 
-     <update id="updateCommentCount" parameterType="java.lang.Integer">
+    <update id="updateCommentCount" parameterType="java.lang.Integer">
        update article as a
        set
        a.article_comment_count = (
@@ -350,27 +351,27 @@
        where a.article_id = #{articleId}
      </update>
 
-     <select id="countArticleByUserAndStatus" resultType="java.lang.Integer">
-         select count(*) from article
-         <where>
-             <if test="status != null">
-                 article_status = #{status} and
-             </if>
-             article_user_id = #{userId}
-         </where>
-     </select>
+    <select id="countArticleByUserAndStatus" resultType="java.lang.Integer">
+        select count(*) from article
+        <where>
+            <if test="status != null">
+                article_status = #{status} and
+            </if>
+            article_user_id = #{userId}
+        </where>
+    </select>
 
-     <select id="countArticleComment" resultType="java.lang.Integer">
+    <select id="countArticleComment" resultType="java.lang.Integer">
          select sum(article_comment_count) from article
          where article_status = 1
      </select>
 
-     <select id="countArticleView" resultType="java.lang.Integer">
+    <select id="countArticleView" resultType="java.lang.Integer">
          select sum(article_view_count) from article
          where article_status = 1
      </select>
 
-     <select id="listArticleByCommentCount" resultType="com.lzt.ssm.blog.entity.Article">
+    <select id="listArticleByCommentCount" resultType="com.lzt.ssm.blog.entity.Article">
          select
          a.article_id, a.article_title
          from article as a

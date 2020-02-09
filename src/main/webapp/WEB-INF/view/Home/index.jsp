@@ -31,7 +31,7 @@
                     <figure class="thumbnail">
                         <a href="/article/${a.articleId}">
                             <c:choose>
-                                <c:when test="${a.articlePhoto != null}">
+                                <c:when test="${a.articlePhoto != null && a.articlePhoto != ''}">
                                     <img  src="${a.articlePhoto}"  class="attachment-content size-content wp-post-image"
                                          alt="${a.articleTitle}">
                                 </c:when>

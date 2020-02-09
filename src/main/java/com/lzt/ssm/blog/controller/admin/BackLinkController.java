@@ -2,6 +2,7 @@ package com.lzt.ssm.blog.controller.admin;
 
 import com.lzt.ssm.blog.entity.Link;
 import com.lzt.ssm.blog.enums.LinkStatus;
+import com.lzt.ssm.blog.exception.ReturnViewException;
 import com.lzt.ssm.blog.service.LinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -53,8 +54,11 @@ public class BackLinkController {
      * @return
      */
     @RequestMapping("/edit/{id}")
-    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) {
+    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) throws Exception {
         Link link = linkService.getEntityById(id);
+        if (link == null) {
+            throw new ReturnViewException("链接不存在");
+        }
 
         mv.addObject("linkCustom", link);
         mv.setViewName("Admin/Link/edit");
@@ -71,7 +75,7 @@ public class BackLinkController {
      * @return
      */
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
-    public String editSubmit(Link link) {
+    public String editSubmit(Link link) throws Exception {
         link.setLinkUpdateTime(new Date());
         linkService.updateEntity(link);
         return "redirect:/admin/link";
@@ -99,7 +103,7 @@ public class BackLinkController {
      * @return
      */
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
-    public String insertSubmit(Link link) {
+    public String insertSubmit(Link link) throws Exception {
         link.setLinkUpdateTime(new Date());
         link.setLinkCreateTime(new Date());
         link.setLinkStatus(LinkStatus.NORMAL.getValue());
@@ -119,7 +123,7 @@ public class BackLinkController {
      * @return
      */
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Integer id) throws Exception {
         linkService.deleteEntityById(id);
         return "redirect:/admin/link";
     }
@@ -132,7 +136,7 @@ public class BackLinkController {
      */
     @RequestMapping("/move/{id}/{direction}")
     @ResponseBody
-    public String move(@PathVariable("id") Integer id, @PathVariable("direction") String direction) {
+    public String move(@PathVariable("id") Integer id, @PathVariable("direction") String direction) throws Exception {
         Link nowEntity = linkService.getEntityById(id);
         Integer nowOrder = nowEntity.getLinkOrder();
         if (UP.equals(direction)) {

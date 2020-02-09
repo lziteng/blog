@@ -53,7 +53,7 @@ public class BackNoticeController {
      * @return
      */
     @RequestMapping("/edit/{id}")
-    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) {
+    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) throws Exception {
         Notice notice = noticeService.getEntityById(id);
         mv.addObject("notice", notice);
         mv.setViewName("Admin/Notice/edit");
@@ -67,7 +67,7 @@ public class BackNoticeController {
      * @return
      */
     @RequestMapping(value = "editSubmit", method = RequestMethod.POST)
-    public String editSubmit(Notice notice) {
+    public String editSubmit(Notice notice) throws Exception {
         notice.setNoticeUpdateTime(new Date());
         noticeService.updateEntity(notice);
         return "redirect:/admin/notice";
@@ -80,7 +80,7 @@ public class BackNoticeController {
      * @return
      */
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Integer id) throws Exception {
         noticeService.deleteEntityById(id);
         return "redirect:/admin/notice";
     }
@@ -102,7 +102,7 @@ public class BackNoticeController {
      * @return
      */
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
-    public String insertSubmit(Notice notice) {
+    public String insertSubmit(Notice notice) throws Exception {
         notice.setNoticeCreateTime(new Date());
         notice.setNoticeUpdateTime(new Date());
         Integer maxOrder = noticeService.getMaxOrder();
@@ -123,7 +123,7 @@ public class BackNoticeController {
      */
     @RequestMapping("/move/{id}/{direction}")
     @ResponseBody
-    public String move(@PathVariable("id") Integer id, @PathVariable("direction") String direction) {
+    public String move(@PathVariable("id") Integer id, @PathVariable("direction") String direction) throws Exception {
         Notice nowEntity = noticeService.getEntityById(id);
 
         Integer nowOrder = nowEntity.getNoticeOrder();

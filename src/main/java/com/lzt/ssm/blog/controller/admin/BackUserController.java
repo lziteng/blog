@@ -2,6 +2,7 @@ package com.lzt.ssm.blog.controller.admin;
 
 import com.lzt.ssm.blog.entity.User;
 import com.lzt.ssm.blog.enums.UserStatus;
+import com.lzt.ssm.blog.exception.ReturnViewException;
 import com.lzt.ssm.blog.service.*;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class BackUserController {
      * @return
      */
     @RequestMapping("/profile")
-    public ModelAndView showView(HttpSession session, ModelAndView mv) {
+    public ModelAndView showView(HttpSession session, ModelAndView mv) throws Exception {
         User sessionUser = (User) session.getAttribute("user");
         User user = userService.getEntityById(sessionUser.getUserId());
         mv.addObject("user", user);
@@ -63,8 +64,11 @@ public class BackUserController {
      * @return
      */
     @RequestMapping("/edit/{id}")
-    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) {
+    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) throws Exception{
         User user = userService.getEntityById(id);
+        if(user == null){
+            throw new ReturnViewException("用户不存在");
+        }
         mv.addObject("user", user);
         mv.setViewName("Admin/User/edit");
         return mv;
@@ -77,7 +81,7 @@ public class BackUserController {
      * @return
      */
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
-    public String editSubmit(User user, HttpSession session) {
+    public String editSubmit(User user, HttpSession session) throws Exception {
         if (fixedAdminUserId.equals(user.getUserId())) {
             user.setUserName("admin");
             user.setUserPass("123456");
@@ -101,7 +105,7 @@ public class BackUserController {
      * @return
      */
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer id, HttpSession session) {
+    public String delete(@PathVariable("id") Integer id, HttpSession session) throws Exception {
         User user = (User) session.getAttribute("user");
         if (!id.equals(user.getUserId()) && !fixedAdminUserId.equals(id)) {
             userService.deleteEntityById(id);
@@ -128,7 +132,7 @@ public class BackUserController {
      * @return
      */
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
-    public String insertSubmit(User user) {
+    public String insertSubmit(User user) throws Exception {
         User userByName = userService.getEntityByName(user.getUserName());
         User userByEmail = userService.getEntityByEmail(user.getUserEmail());
         if (userByName == null && userByEmail == null) {

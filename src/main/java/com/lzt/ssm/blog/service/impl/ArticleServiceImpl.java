@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.github.pagehelper.*;
 import com.lzt.ssm.blog.entity.*;
 import com.lzt.ssm.blog.enums.ArticleCommentStatus;
+import com.lzt.ssm.blog.exception.ReturnViewException;
 import com.lzt.ssm.blog.mapper.*;
 import com.lzt.ssm.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void insertEntity(Article article) {
+    public void insertEntity(Article article) throws Exception {
         //添加文章
         article.setArticleCreateTime(new Date());
         article.setArticleUpdateTime(new Date());
@@ -43,24 +44,28 @@ public class ArticleServiceImpl implements ArticleService {
         article.setArticleViewCount(0);
         article.setArticleLikeCount(0);
         article.setArticleCommentCount(0);
-        articleMapper.insertSelective(article);
-        //添加分类和文章的关联记录
-        for (Category category : article.getCategoryList()) {
-            ArticleCategoryRef articleCategoryRef =
-                    new ArticleCategoryRef(article.getArticleId(), category.getCategoryId());
-            articleCategoryRefMapper.insert(articleCategoryRef);
-        }
+        try {
+            articleMapper.insertSelective(article);
+            //添加分类和文章的关联记录
+            for (Category category : article.getCategoryList()) {
+                ArticleCategoryRef articleCategoryRef =
+                        new ArticleCategoryRef(article.getArticleId(), category.getCategoryId());
+                articleCategoryRefMapper.insert(articleCategoryRef);
+            }
 
-        //添加标签和文章的关联记录
-        for (Tag tag : article.getTagList()) {
-            ArticleTagRef articleTagRef = new ArticleTagRef(article.getArticleId(), tag.getTagId());
-            articleTagRefMapper.insert(articleTagRef);
+            //添加标签和文章的关联记录
+            for (Tag tag : article.getTagList()) {
+                ArticleTagRef articleTagRef = new ArticleTagRef(article.getArticleId(), tag.getTagId());
+                articleTagRefMapper.insert(articleTagRef);
+            }
+        } catch (Exception e) {
+            throw new ReturnViewException("添加文章异常");
         }
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteEntityById(Integer articleId) {
+    public void deleteEntityById(Integer articleId) throws Exception {
         articleMapper.deleteByPrimaryKey(articleId);
 
         //删除分类和文章的关联记录
@@ -68,6 +73,7 @@ public class ArticleServiceImpl implements ArticleService {
 
         //删除标签和文章的关联记录
         articleTagRefMapper.deleteByArticleId(articleId);
+
     }
 
     @Override
@@ -83,32 +89,37 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateEntityDetail(Article article) {
+    public void updateEntityDetail(Article article) throws Exception {
         article.setArticleUpdateTime(new Date());
-        articleMapper.updateByPrimaryKeySelective(article);
 
-        if (CollectionUtil.isNotEmpty(article.getCategoryList())) {
-            //先删除分类和文章的关联记录
-            articleCategoryRefMapper.deleteByArticleId(article.getArticleId());
+        try {
+            articleMapper.updateByPrimaryKeySelective(article);
+            if (CollectionUtil.isNotEmpty(article.getCategoryList())) {
+                //先删除分类和文章的关联记录
+                articleCategoryRefMapper.deleteByArticleId(article.getArticleId());
 
-            //再添加分类和文章的关联记录
-            for (Category category : article.getCategoryList()) {
-                ArticleCategoryRef articleCategoryRef =
-                        new ArticleCategoryRef(article.getArticleId(), category.getCategoryId());
-                articleCategoryRefMapper.insert(articleCategoryRef);
+                //再添加分类和文章的关联记录
+                for (Category category : article.getCategoryList()) {
+                    ArticleCategoryRef articleCategoryRef =
+                            new ArticleCategoryRef(article.getArticleId(), category.getCategoryId());
+                    articleCategoryRefMapper.insert(articleCategoryRef);
+                }
             }
+
+            if (CollectionUtil.isNotEmpty(article.getTagList())) {
+                //先删除标签和文章的关联记录
+                articleTagRefMapper.deleteByArticleId(article.getArticleId());
+
+                //再添加标签和文章的关联记录
+                for (Tag tag : article.getTagList()) {
+                    ArticleTagRef articleTagRef = new ArticleTagRef(article.getArticleId(), tag.getTagId());
+                    articleTagRefMapper.insert(articleTagRef);
+                }
+            }
+        } catch (Exception e) {
+            throw new ReturnViewException("修改文章异常");
         }
 
-        if (CollectionUtil.isNotEmpty(article.getTagList())) {
-            //先删除标签和文章的关联记录
-            articleTagRefMapper.deleteByArticleId(article.getArticleId());
-
-            //再添加标签和文章的关联记录
-            for (Tag tag : article.getTagList()) {
-                ArticleTagRef articleTagRef = new ArticleTagRef(article.getArticleId(), tag.getTagId());
-                articleTagRefMapper.insert(articleTagRef);
-            }
-        }
     }
 
     @Override

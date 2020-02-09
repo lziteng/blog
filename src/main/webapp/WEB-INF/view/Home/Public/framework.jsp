@@ -17,7 +17,7 @@
     <meta name="applicable-device" content="pc,mobile">
     <meta name="MobileOptimized" content="width"/>
     <meta name="HandheldFriendly" content="true"/>
-<%--    <link rel="shortcut icon" href="/img/logo.png">--%>
+    <link rel="shortcut icon" href="/img/logo.png">
     <rapid:block name="description">
         <meta name="description" content="${options.optionMetaDescrption}"/>
     </rapid:block>

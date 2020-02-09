@@ -28,7 +28,7 @@ public class BackOptionsController {
     }
 
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
-    public String editSubmit(Options options) {
+    public String editSubmit(Options options) throws Exception {
         optionsService.updateEntity(options);
         return "redirect:/admin/options";
     }

@@ -28,6 +28,7 @@ public class UploadFileController {
             "D:" + File.separator + "myFile" + File.separator + "project" + File.separator + "blog" + File.separator +
                     "uploads";*/
 
+//   家里电脑
     public final String rootPath =
             "E:" + File.separator + "project" + File.separator + "blog" + File.separator + "uploads";
 
@@ -90,8 +91,7 @@ public class UploadFileController {
             try {
                 //将内存中的数据写入到磁盘
                 file.transferTo(descFile);
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
                 log.error("文件上传失败，cause:{}", e);
             }

@@ -2,13 +2,11 @@ package com.lzt.ssm.blog.controller.admin;
 
 import com.lzt.ssm.blog.entity.Menu;
 import com.lzt.ssm.blog.enums.MenuLevel;
+import com.lzt.ssm.blog.exception.ReturnViewException;
 import com.lzt.ssm.blog.service.MenuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -46,12 +44,15 @@ public class BackMenuController {
     }
 
     @RequestMapping("/edit/{id}")
-    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) {
+    public ModelAndView editView(@PathVariable("id") Integer id, ModelAndView mv) throws Exception {
         List<Menu> topMenuList = menuService.listEntityByLevel(MenuLevel.TOP_MENU.getValue());
         List<Menu> mainMenuList = menuService.listEntityByLevel(MenuLevel.MAIN_MENU.getValue());
         mv.addObject("topMenuList", topMenuList);
         mv.addObject("mainMenuList", mainMenuList);
         Menu menu = menuService.getEntityById(id);
+        if (menu == null) {
+            throw new ReturnViewException("菜单不存在");
+        }
         mv.addObject("menu", menu);
 
         mv.setViewName("Admin/Menu/edit");
@@ -59,13 +60,13 @@ public class BackMenuController {
     }
 
     @RequestMapping(value = "/editSubmit", method = RequestMethod.POST)
-    public String editSubmit(Menu menu) {
+    public String editSubmit(Menu menu) throws Exception {
         menuService.updateEntity(menu);
         return "redirect:/admin/menu";
     }
 
     @RequestMapping(value = "/insertSubmit", method = RequestMethod.POST)
-    public String insertSubmit(Menu menu) {
+    public String insertSubmit(Menu menu) throws Exception {
         Integer maxOrder = menuService.getMaxOrder();
         if (maxOrder == null) {
             maxOrder = 0;
@@ -78,7 +79,7 @@ public class BackMenuController {
     }
 
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Integer id) throws Exception {
         menuService.deleteEntityById(id);
         return "redirect:/admin/menu";
     }
@@ -93,7 +94,8 @@ public class BackMenuController {
      */
     @RequestMapping("/move/{id}/{direction}/{level}")
     @ResponseBody
-    public String move(@PathVariable("id") Integer id, @PathVariable("direction") String direction, @PathVariable("level") Integer level) {
+    public String move(@PathVariable("id") Integer id, @PathVariable("direction") String direction,
+            @PathVariable("level") Integer level) throws Exception {
         Menu nowEntity = menuService.getEntityById(id);
         Integer nowOrder = nowEntity.getMenuOrder();
         if (UP.equals(direction)) {
